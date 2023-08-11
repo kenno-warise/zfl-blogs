@@ -1,0 +1,99 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block blogs-style %}
+<link rel="stylesheet" href="{% static 'blogs/css/blogs-style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ブロックを挿入する -->
+
+<!-- コンテナ内　カテゴリー・記事リスト・サイドバーなど -->
+<div class="container">
+
+  <!-- BootStrapのグリッドシステム -->
+  <div class="row">
+    <div class="col-lg-8 col-sm-12 main-bar">
+      
+  <!-- 記事の投稿完了・編集メッセージ -->
+  {% for message in messages %}
+  <div class="alert alert-warning" role="alert">
+    {{ message }}
+  </div>
+  {% endfor %}
+      <div class="jumbotron jumbotron-fluid">
+	<div class="container">
+	  <div style="display: flex;">
+	    <img class="d-flex align-self-center mr-3" src="{% static 'home/image/home_blogs.png' %}" alt="Generic placeholder image">
+	    <h2>{% block title %}Blog{% endblock %}</h2>
+	  </div>
+	  <p class="lead">
+	  
+	    <a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
+	    {% for category in category_list %}
+	    <a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:blogs_category' category %}">{{ category }}</a>
+	    {% endfor %}
+
+	  </p>
+	</div>
+      </div>
+      <!-- 記事投稿件数 -->
+      {% if blogs.cunt != 0 %}
+      <p>投稿<strong>{{ blogs.count }}</strong>件</p>
+      {% endif %}
+
+      <!-- カテゴリーにアクセスされた時の結果 -->
+      {% if category %}
+      <div class="alert alert-success" role="alert">
+      <strong>カテゴリー : {{ category.title }}</strong>
+      </div>
+      {% endif %}
+
+      <!-- 記事のリスト -->
+
+      {% for blog in blogs_page %}
+      <div class="media">
+	<div class="media-body">
+	  <p>
+	  <img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
+	  </p>
+	  <p>
+	  <strong>{{ blog.created_at }}</strong> - 
+	  <strong class="text-warning">{{ blog.category.title }}</strong>
+	  {% if request.user.is_superuser %}
+	  <a href="{% url 'blogs:private' pk=blog.id %}">非公開</a>
+	  {% endif %}
+	  </p>
+	  <a class="a-link" href="{% url 'blogs:detail' blog_id=blog.id %}">
+	    <h5 class="mt-0 mb-1"><strong>{{ blog.title }}</strong></h5><br>
+	  </a>
+	  <p class="text-black-50">{{ blog.text | truncatechars:'100' | striptags }}</p>
+	</div>
+      </div>
+      {% endfor %}
+      <!-- 記事リスト END -->
+
+      {% include 'blogs/page.html' %}
+    </div>
+
+    <!-- サイドバー -->
+    <div class="col-lg-4 col-sm-12 side-bar">
+      {% include 'blogs/blog_views.html' %}
+      <div class="stick">
+      {% include 'blogs/category_graph.html' %}
+      <br>
+      <p class="lead">
+      <a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
+      {% for category in category_list %}
+      <a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:blogs_category' category %}">{{ category }}</a>
+       {% endfor %}
+      </p>
+      </div>
+    </div>
+  </div>
+  <!-- BootStrapのグリッドシステム END -->
+
+</div>
+
+{% endblock %}

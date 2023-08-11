@@ -1,0 +1,16 @@
+﻿
+<!-- ページネーション -->
+<div class="pagination">
+    <span class="step-links">
+    {% if blogs_page.has_previous %}
+        <a href="?page={{ blogs_page.previous_page_number }}" class="text-violet"> <<<</a>
+    {% endif %}
+    <span class="current">
+        <strong>{{ blogs_page.number }} / {{ blogs_page.paginator.num_pages }}</strong>
+    </span>
+    {% if blogs_page.has_next %}
+        <a href="?page={{ blogs_page.next_page_number }}" class="text-violet"> >>></a>
+    {% endif %}
+    </span>
+</div>
+

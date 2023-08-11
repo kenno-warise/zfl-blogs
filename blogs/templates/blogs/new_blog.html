@@ -1,0 +1,37 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% block detail-style %}
+    <link rel="stylesheet" href="{% static 'blogs/css/detail-style.css' %}">
+    <link rel="stylesheet" href="{% static 'blogs/css/tomorrow-night-bright.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% include 'blogs/markdown_modal.html' %}
+
+<!-- コンテナ内　新規作成フォーム・マークダウンのコード -->
+<div class="blogs-title container"><!--fluid"-->
+
+  <!-- BootStrapのグリッドシステム -->
+  <div>
+    <br>
+
+    <!-- 新規作成フォーム -->
+    <form action="{% url 'blogs:new_blog' %}" method="POST">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+	<label for="{{ field.id }}">{{ field.label_tag }}</label>
+	{{ field }}
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-sm">投稿</button>
+    </form>
+    {{ form.media }}
+    <!-- 新規作成フォーム END -->
+  </div>
+  <br>
+</div>
+<br>
+
+{% endblock %}

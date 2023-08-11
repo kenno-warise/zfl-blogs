@@ -1,0 +1,47 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+{% load mark %}
+
+{% block detail-style %}
+    <link rel="stylesheet" href="{% static 'blogs/css/detail-style.css' %}">
+    <link rel="stylesheet" href="{% static 'blogs/css/tomorrow-night-bright.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- コンテナ内　日付・記事詳細・サイドバー -->
+<div class="container">
+
+  <!-- BootStrapグリッドシステム -->
+  <div class="row">
+
+    <!-- 記事詳細 -->
+    <div class="col-lg-8 col-sm-12 main-bar">
+      <div class="media">
+	<div class="media-body">
+	  <p><img class="d-flex ml-3" src="{{ private_detail.category.thumbnail.url }}" alt="Generic placeholder image"></p>
+	  <h5 class="mt-0 md-1"><strong>{% block title %}非 - {{ private_detail.title }}{% endblock %}</strong></h5>
+	  <p><strong class="text-black-50">投稿日 {{ private_detail.created_at }}</strong> >> <strong>更新日 {{ private_detail.updated_at }}</strong></p>
+	  <a href="{% url 'blogs:edit_blog' private_detail.id %}">
+	    <button type="button" class="btn btn-primary btn-sm">編集</button>
+	  </a>
+	</div>
+      </div>
+      <div class="blogs-markdown-style">
+	{{ private_detail.text | markdown_to_html | safe }}
+	<hr />
+      </div>
+    </div>
+    <!-- 記事詳細 END -->
+
+    <!-- サイドバー -->
+    <div class="col-lg-4 col-sm-12 side-bar">
+    </div>
+    <!-- サイドバー END -->
+
+  </div>
+  <!-- BootStrapのグリッドシステム END -->
+
+</div>
+
+{% endblock %}

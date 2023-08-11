@@ -1,0 +1,72 @@
+﻿{% extends 'base.html' %}
+{% load static %}
+
+{% block blogs-style %}
+<link rel="stylesheet" href="{% static 'blogs/css/blogs-style.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-lg-8 col-sm 12 main-bar">
+
+      <!-- 大型ディスプレイ -->
+      <div class="jumbotron jumbotron-fluid">
+	<div class="container">
+	  <h1 class="display-4">{% block title %}非公開リスト{% endblock %}</h1>
+	</div>
+      </div>
+      <!-- 大型ディスプレイ END -->
+
+      <!-- コンテナ内　カテゴリー・記事リスト・サイドバーなど -->
+      <!-- 記事投稿件数 -->
+      {% if blog_private.cunt != 0 %}
+      <p>投稿<strong>{{ blog_private.count }}</strong>件</p>
+      {% endif %}
+
+      <!-- 記事の投稿完了・編集メッセージ -->
+      {% for message in messages %}
+      <div class="alert alert-warning" role="alert">
+	{{ message }}
+      </div>
+      {% endfor %}
+
+      <!-- BootStrapのグリッドシステム -->
+
+      <!-- 記事の新規作成ボタン -->
+      {% if request.user.is_superuser %}
+      <a href="{% url 'blogs:new_blog' %}"><button type="button" class="btn btn-secondary btn-sm">作成</button></a>
+      <br>
+      {% endif %}
+
+
+      <!-- 記事のリスト -->
+      {% for blog in blog_private %}
+      <div class="media">
+	<div class="media-body">
+	  <p><img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image"></p>
+	  <p>
+	  <strong>{{ blog.created_at }}</strong> /
+	  <strong class="text-warning">{{ blog.category.title }}</strong>
+	  {% if request.user.is_superuser %}
+	  / <a href="{% url 'blogs:release' pk=blog.id %}">公開</a>
+	  {% endif %}
+	  </p>
+	  <a class="a-link" href="{% url 'blogs:private_detail' pk=blog.id %}">
+	    <h5 class="mt-0 mb-1">{{ blog.title }}</h5><br>
+	  </a>
+	  <p class="text-black-50">{{ blog.text | slice:':100' | striptags }} ...</p>
+	</div>
+      </div>
+      {% endfor %}
+      <!-- 記事リスト END -->
+    </div>
+    <div class="col-lg-4 col-sm-12 side-bar">
+    </div>
+    <!-- BootStrapのグリッドシステム END -->
+  </div>
+</div>
+
+{% endblock %}
