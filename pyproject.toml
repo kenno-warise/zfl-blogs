@@ -33,7 +33,7 @@ Source = "https://github.com/unknown/Appのパッケージ名"
 files = ["requirements.txt"]
 
 [tool.hatch.version]
-path = "app/__init__.py"
+path = "blogs/__init__.py"
 
 # デフォルト環境の依存パッケージ
 [tool.hatch.envs.default]
@@ -49,7 +49,7 @@ runserver = "python3 manage.py runserver"
 startapp = "python3 manage.py startapp {args}"
 shell = "python3 manage.py shell"
 test = "python3 manage.py test {args}"
-cov = "coverage run --include=app/* --omit=app/test*,app/__init__.py,app/migrations/* manage.py test {args}"
+cov = "coverage run --include=blogs/* --omit=blogs/test*,blogs/__init__.py,blogs/migrations/* manage.py test {args}"
 cov-report = "coverage report -m"
 
 # pythonリンター
@@ -61,10 +61,10 @@ dependencies = [
   "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:app/views.py app/tests.py}"
+typing = "mypy --install-types --non-interactive {args:blogs/views.py blogs/tests.py}"
 style = [
-  "ruff --fix {args:app/views.py app/tests.py}",
-  "black --check --diff {args:app/views.py app/tests.py}"
+  "ruff --fix {args:blogs/views.py blogs/tests.py}",
+  "black --check --diff {args:blogs/views.py blogs/tests.py}"
 ]
 all = [
   "style",
@@ -126,6 +126,6 @@ ignore = [
 # ビルド実行時に含めるファイルと含めないファイルの設定
 # 以下は配布用Djangoアプリに対しての設定
 [tool.hatch.build]
-include = ["app/*"]
-exclude = ["app/migrations/*"]
+include = ["blogs/*"]
+exclude = ["blogs/migrations/*"]
 
