@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup',
+    'markdownx',
     'blogs',
 ]
 
@@ -78,7 +80,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blogs.context.common',
             ],
+            'libraries': {
+                'mark': 'blogs.templatetags.mark',
+            }
         },
     },
 ]
