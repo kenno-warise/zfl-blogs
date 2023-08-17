@@ -1,5 +1,11 @@
 .venv
 db.sqlite3
 __pycache__
-migrations/*
+**/migrations/0*.py
+!**/migrations/__init__.py
 dist
+media
+.python-version
+.coverage
+.mypy_cache
+.ruff_cache
