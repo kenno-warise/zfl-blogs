@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'blogs',
 ]
 
-ROOT_URLCONF = 'zerofromlight.urls'
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 ...
 
