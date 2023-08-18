@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'blogs',
 ]
 
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
