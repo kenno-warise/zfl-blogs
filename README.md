@@ -10,6 +10,7 @@
 - [詳細](#詳細)
 - [インストール](#インストール)
 - [設定](#設定)
+- [実行](#実行)
 - [License](#license)
 
 ## 詳細
@@ -107,6 +108,25 @@ if settings.DEBUG == True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
+## 実行
+
+データベースの作成
+
+```console
+$ python3 manage.py migrate
+```
+
+スーパーユーザーの作成
+
+```console
+$ python3 manage.py createsuperuser
+```
+
+グーグルアナリティスクすAPIからブログの閲覧数を取得するコマンドの実行
+
+```console
+$ python3 manage.py access_ranking
+```
 
 ## License
 
