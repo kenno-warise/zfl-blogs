@@ -108,6 +108,14 @@ if settings.DEBUG == True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
+`settings.py`の`FORM_RENDERER`で`django.forms.renderers.TemplatesSetting`に設定しているので、プロジェクト直下に`templates`ディレクトリを作成し、`blogs`アプリの`templates`ディレクトリから`markdownx`ディレクトリをコピーしてきます。
+
+そうすることで、記事を書く際のマークダウンプレビューを横並びにすることができます。
+
+```console
+$ python3 -c "import blogs; print(blogs.__path__)"
+```
+
 ## 実行
 
 データベースの作成

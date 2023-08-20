@@ -9,6 +9,7 @@ class BlogForm(forms.ModelForm):
     Blog作成自作フォームの作成
 
     """
+    
     class Meta:
         model = Blog
         fields = ('category', 'title', 'text', 'is_publick')

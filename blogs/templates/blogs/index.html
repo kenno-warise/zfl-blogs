@@ -38,6 +38,12 @@
 	  </p>
 	</div>
       </div>
+
+      <!-- 非公開記事のリンク -->
+      {% if request.user.is_superuser %}
+      <a class="nav-link" href="{% url 'blogs:blog_private' %}">非公開 </a>
+      {% endif %}
+      
       <!-- 記事投稿件数 -->
       {% if blogs.cunt != 0 %}
       <p>投稿<strong>{{ blogs.count }}</strong>件</p>
