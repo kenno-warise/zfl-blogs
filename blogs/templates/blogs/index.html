@@ -41,7 +41,7 @@
 
       <!-- 非公開記事のリンク -->
       {% if request.user.is_superuser %}
-      <a class="nav-link" href="{% url 'blogs:blog_private' %}">非公開 </a>
+      <a type="button" class="btn btn-success btn-sm" href="{% url 'blogs:private_index' %}">非公開 </a>
       {% endif %}
       
       <!-- 記事投稿件数 -->
@@ -85,7 +85,7 @@
 
     <!-- サイドバー -->
     <div class="col-lg-4 col-sm-12 side-bar">
-      {% include 'blogs/blog_views.html' %}
+      {% include 'blogs/top_10_ranking.html' %}
       <div class="stick">
       {% include 'blogs/category_graph.html' %}
       <br>

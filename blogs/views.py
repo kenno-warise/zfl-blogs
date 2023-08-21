@@ -33,12 +33,12 @@ def index(request):
 
 
 @login_required
-def blog_private(request):
+def private_index(request):
     """
     非公開Blogリスト
     """
-    blog_private = Blog.objects.filter(is_publick=False).order_by('-id')
-    return render(request, 'blogs/blog_private.html', {'blog_private': blog_private})
+    private_blog = Blog.objects.filter(is_publick=False).order_by('-id')
+    return render(request, 'blogs/private_index.html', {'private_blog': private_blog})
 
 
 def detail(request, blog_id):
@@ -124,7 +124,7 @@ def release(request, pk):
     """
     blog_release = get_object_or_404(Blog, id=pk, is_publick=False)
     blog_release.to_release()
-    return redirect('blogs:blog_private')
+    return redirect('blogs:private_index')
 
 
 @login_required

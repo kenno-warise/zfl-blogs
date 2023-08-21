@@ -21,12 +21,12 @@
       <!-- 大型ディスプレイ END -->
 
       <!-- ブログトップのリンク -->
-      <a class="nav-link" href="{% url 'blogs:index' %}">ブログトップ </a>
-      
+      <a type="button" class="btn btn-success btn-sm" href="{% url 'blogs:index' %}">ブログトップ</a>
+
       <!-- コンテナ内　カテゴリー・記事リスト・サイドバーなど -->
       <!-- 記事投稿件数 -->
       {% if blog_private.cunt != 0 %}
-      <p>投稿<strong>{{ blog_private.count }}</strong>件</p>
+      <p>投稿<strong>{{ private_blog.count }}</strong>件</p>
       {% endif %}
 
       <!-- 記事の投稿完了・編集メッセージ -->
@@ -46,7 +46,7 @@
 
 
       <!-- 記事のリスト -->
-      {% for blog in blog_private %}
+      {% for blog in private_blog %}
       <div class="media">
 	<div class="media-body">
 	  <p><img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image"></p>
