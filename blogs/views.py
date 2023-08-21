@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.views.generic import TemplateView
 from .models import Blog, Category, Popular
 from .forms import BlogForm
 
@@ -15,21 +16,37 @@ import numpy as np
 import japanize_matplotlib
 
 
-def index(request):
-    """
-    Blogアプリトップページ
-    """
-    blogs = Blog.objects.filter(is_publick=True).order_by('-id')
-    paginator = Paginator(blogs, 10)
-    page = request.GET.get('page')
-    blogs_page = paginator.get_page(page)
-    populars = Popular.objects.all()
-    context = {
-            'blogs': blogs,
-            'blogs_page': blogs_page,
-            'populars': populars,
-    }
-    return render(request, 'blogs/index.html', context)
+class IndexView(TemplateView):
+    template_name = "blogs/index.html"
+
+    def get_context_data(self, **kwargs):
+        blogs = Blog.objects.filter(is_publick=True).order_by('-id')
+        paginator = Paginator(blogs, 10)
+        page = self.request.GET.get('page')
+        blogs_page = paginator.get_page(page)
+        populars = Popular.objects.all()
+        context = {
+                'blogs': blogs,
+                'blogs_page': blogs_page,
+                'populars': populars,
+        }
+        return context
+
+# def index(request):
+#     """
+#     Blogアプリトップページ
+#     """
+#     blogs = Blog.objects.filter(is_publick=True).order_by('-id')
+#     paginator = Paginator(blogs, 10)
+#     page = request.GET.get('page')
+#     blogs_page = paginator.get_page(page)
+#     populars = Popular.objects.all()
+#     context = {
+#             'blogs': blogs,
+#             'blogs_page': blogs_page,
+#             'populars': populars,
+#     }
+#     return render(request, 'blogs/index.html', context)
 
 
 @login_required
