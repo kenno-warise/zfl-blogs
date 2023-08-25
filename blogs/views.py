@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 from .models import Blog, Category, Popular
 from .forms import BlogForm
 
@@ -16,20 +16,20 @@ import numpy as np
 import japanize_matplotlib
 
 
-class IndexView(TemplateView):
+class IndexView(ListView):
     template_name = "blogs/index.html"
+    context_object_name = "blogs"
+    paginate_by = 2
 
-    def get_context_data(self, **kwargs):
-        blogs = Blog.objects.filter(is_publick=True).order_by('-id')
-        paginator = Paginator(blogs, 10)
-        page = self.request.GET.get('page')
-        blogs_page = paginator.get_page(page)
-        populars = Popular.objects.all()
-        context = {
-                'blogs': blogs,
-                'blogs_page': blogs_page,
-                'populars': populars,
-        }
+    def get_queryset(self):
+        """ブログ記事が公開且つIDの古い順にデータを取得"""
+        queryset = Blog.objects.filter(is_publick=True).order_by('-id')
+        return queryset
+
+    def get_context_data(self):
+        """テンプレートへ渡すPopularインスタンスの作成"""
+        context = super().get_context_data()
+        context["populars"] = Popular.objects.all()
         return context
 
 # def index(request):

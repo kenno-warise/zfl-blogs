@@ -58,7 +58,7 @@
 
       <!-- 記事のリスト -->
 
-      {% for blog in blogs_page %}
+      {% for blog in blogs %}
       <div class="media">
 	<div class="media-body">
 	  <p>
@@ -80,6 +80,7 @@
       {% endfor %}
       <!-- 記事リスト END -->
 
+      <!-- ページネーション -->
       {% include 'blogs/page.html' %}
     </div>
 
