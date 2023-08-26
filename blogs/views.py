@@ -19,7 +19,7 @@ import japanize_matplotlib
 class IndexView(ListView):
     template_name = "blogs/index.html"
     context_object_name = "blogs"
-    paginate_by = 2
+    paginate_by = 10
 
     def get_queryset(self):
         """ブログ記事が公開且つIDの古い順にデータを取得"""
@@ -114,24 +114,48 @@ def edit_blog(request, blog_id):
     return render(request, 'blogs/edit_blog.html', {'form': form, 'blog': blog })
 
 
-def blogs_category(request, category):
-    """
-    Blogカテゴリー機能
-    """
-    category = get_object_or_404(Category, title=category)
-    #category = Category.objects.get(title=category)
-    blogs = Blog.objects.filter(category=category, is_publick=True).order_by('-id')
-    paginator = Paginator(blogs, 10)
-    page = request.GET.get('page')
-    blogs_page = paginator.get_page(page)
-    populars = Popular.objects.all()
-    context = {
-            'blogs': blogs,
-            'category': category,
-            'blogs_page': blogs_page,
-            'populars': populars,
-    }
-    return render(request, 'blogs/index.html', context)
+class CategoryView(ListView):
+    template_name = "blogs/index.html"
+    context_object_name = "blogs"
+    paginate_by = 10
+
+    def get_queryset(self):
+        """カテゴリー別でブログ記事が公開且つIDの古い順にデータを取得"""
+        # 404エラーを使用した方法
+        # category = get_object_or_404(Category, title=self.kwargs['category'])
+        # queryset = Blog.objects.filter(is_publick=True, category=category).order_by('-id')
+        
+        # 404エラーを使わない方法
+        category = self.kwargs['category']
+        queryset = Blog.objects.filter(is_publick=True, category__title=category).order_by('-id')
+        
+        messages.success(self.request, 'カテゴリ：{}'.format(category))
+        return queryset
+
+    def get_context_data(self):
+        """テンプレートへ渡すPopularインスタンスの作成"""
+        context = super().get_context_data()
+        context["populars"] = Popular.objects.all()
+        return context
+
+# def blogs_category(request, category):
+#     """
+#     Blogカテゴリー機能
+#     """
+#     category = get_object_or_404(Category, title=category)
+#     #category = Category.objects.get(title=category)
+#     blogs = Blog.objects.filter(category=category, is_publick=True).order_by('-id')
+#     paginator = Paginator(blogs, 10)
+#     page = request.GET.get('page')
+#     blogs_page = paginator.get_page(page)
+#     populars = Popular.objects.all()
+#     context = {
+#             'blogs': blogs,
+#             'category': category,
+#             'blogs_page': blogs_page,
+#             'populars': populars,
+#     }
+#     return render(request, 'blogs/index.html', context)
 
 
 @login_required

@@ -15,7 +15,7 @@ urlpatterns = [
                     views.private_detail, name='private_detail'),
         path('release/<pk>/', views.release, name='release'),
         path('private/<pk>/', views.private, name='private'),
-        path('blogs/<str:category>/', views.blogs_category, name='blogs_category'),
+        path('category/<str:category>/', views.CategoryView.as_view(), name='category'),
         path('category_graph/', views.category_graph, name='category_graph'),
 ]
 
