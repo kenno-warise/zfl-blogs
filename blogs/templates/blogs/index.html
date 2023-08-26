@@ -66,7 +66,7 @@
 	  <a href="{% url 'blogs:private' pk=blog.id %}">非公開</a>
 	  {% endif %}
 	  </p>
-	  <a class="a-link" href="{% url 'blogs:detail' blog_id=blog.id %}">
+	  <a class="a-link" href="{% url 'blogs:detail' blog.pk %}">
 	    <h5 class="mt-0 mb-1"><strong>{{ blog.title }}</strong></h5><br>
 	  </a>
 	  <p class="text-black-50">{{ blog.text | truncatechars:'100' | striptags }}</p>

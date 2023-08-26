@@ -10,45 +10,64 @@
 
 {% block content %}
 
-<!-- twitter用のブロック要素を追加する -->
-
 <!-- コンテナ内　日付・記事詳細・サイドバー -->
 <div class="container">
+
   <!-- BootStrapのグリッドシステム -->
   <div class="row">
 
-    <!-- 記事詳細 -->
+    <!-- メインバー -->
     <div class="col-lg-8 col-sm-12 main-bar">
 
+      <!-- 看板 -->
       <div class="jumbotron jumbotron-fluid">
 	<div class="container">
 	  <img class="d-flex mr-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
 	  <h2 class="display-5"><strong>{% block blogs %}{% block title %}{{ blog.title }}{% endblock %}{% endblock %}</strong></h2>
 	  <p class="lead">
 	  <strong class="text-black-50">投稿日 {{ blog.created_at }}</strong> >> <strong>更新日 {{ blog.updated_at }}</strong>
-	</p>
+	  </p>
 	</div>
       </div>
+      <!-- 看板終 -->
 
+      <!-- 管理人だけ表示 -->
       {% if request.user.is_superuser %}
+
+      <!-- 記事編集用ボタン -->
       <a href="{% url 'blogs:edit_blog' blog.id %}">
 	<button type="button" class="btn btn-primary btn-sm">編集</button>
       </a>
+
       {% endif %}
 
-      <div class="blogs-markdown-style">{{ blog.text | markdown_to_html }}</div>
+      <!-- 記事詳細 -->
+      <div class="blogs-markdown-style">
+	{{ blog.text | markdown_to_html }}
+      </div>
+      <!-- 記事詳細終 -->
+
+      <!-- 目次モーダルの追従ボタン -->
       {% include 'blogs/toc_display.html' %}
+
+      <!-- ブログトップに戻るリンク -->
       <a class="text-violet" href="{% url 'blogs:index' %}">一覧へ戻る</a>
+
     </div>
-    <!-- 記事詳細 END -->
+    <!-- メインバー終 -->
 
     <!-- サイドバー -->
     <div class="col-lg-4 col-sm-12 side-bar">
-      {% include 'blogs/new_order.html'%}
+
+      <!-- 新着記事リスト -->
+      {% include 'blogs/new_articls.html'%}
+
     </div>
-    <!-- サイドバー END -->
+    <!-- サイドバー終 -->
+
   </div>
-  <!-- BootStrapのグリッドシステム END -->
+  <!-- BootStrapのグリッドシステム終 -->
+
 </div>
 
 {% endblock %}
