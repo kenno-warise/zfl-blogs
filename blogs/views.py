@@ -2,6 +2,7 @@
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import Blog, Category, Popular
@@ -101,9 +102,7 @@ class DetailView(DetailView):
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data()
-        context["new_articls"] = Blog.objects.filter(is_publick=True).order_by('-id')[:5]
-        print(context['new_articls'])
-        print('?????')
+        context["new_articls"] = self.model.objects.filter(is_publick=True).order_by('-id')[:5]
         return context
 
 # def detail(request, blog_id):
@@ -120,13 +119,24 @@ class DetailView(DetailView):
 #     return render(request, 'blogs/detail.html', context)
 
 
-@login_required
-def private_index(request):
-    """
-    非公開Blogリスト
-    """
-    private_blog = Blog.objects.filter(is_publick=False).order_by('-id')
-    return render(request, 'blogs/private_index.html', {'private_blog': private_blog})
+class PrivateIndexView(ListView):
+    queryset = Blog.objects.filter(is_publick=False).order_by('-id')
+    template_name = "blogs/private_index.html"
+    context_object_name = "private_blog"
+
+    def get(self, request):
+        """管理人以外のアクセスはHTMLページでコメントを返す"""
+        if not request.user.is_staff:
+            return HttpResponse('<h1>権限がありません。</h1>')
+        return super().get(request)
+
+# @login_required
+# def private_index(request):
+#     """
+#     非公開Blogリスト
+#     """
+#     private_blog = Blog.objects.filter(is_publick=False).order_by('-id')
+#     return render(request, 'blogs/private_index.html', {'private_blog': private_blog})
 
 
 @login_required

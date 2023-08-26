@@ -30,7 +30,12 @@
       <div class="blogs-markdown-style">
 	{{ private_detail.text | markdown_to_html | safe }}
 	<hr />
+
+      <!-- ブログトップに戻るリンク -->
+      <a class="text-violet" href="{% url 'blogs:private_index' %}">非表示リスト一覧へ戻る</a>
+      
       </div>
+
     </div>
     <!-- 記事詳細 END -->
 
