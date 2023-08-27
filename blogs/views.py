@@ -2,9 +2,8 @@
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
 from .models import Blog, Category, Popular
 from .forms import BlogForm
 
@@ -163,20 +162,36 @@ class PrivateDetailView(DetailView):
 #     return render(request, 'blogs/private_detail.html', {'private_detail': private_detail})
 
 
-@login_required
-def new_blog(request):
-    """
-    Blog作成フォーム
-    """
-    if request.method == "POST":
-        form = BlogForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "投稿が完了しました。")
-            return redirect('blogs:index')
-    else:
-        form = BlogForm
-    return render(request, 'blogs/new_blog.html', {'form': form })
+class BlogFormView(FormView):
+    template_name = "blogs/new_blog.html"
+    form_class = BlogForm
+    success_url = "/blogs/"
+    get_object_name = "form"
+
+    def form_valid(self, form):
+        messages.success(self.request, '新規作成完了')
+        return super().form_valid(form)
+
+    def get(self, request):
+        """管理人以外のアクセスはHTMLページでコメントを返す"""
+        if not request.user.is_staff:
+            return HttpResponse('<h1>権限がありません。</h1>')
+        return super().get(request)
+
+# @login_required
+# def new_blog(request):
+#     """
+#     Blog作成フォーム
+#     """
+#     if request.method == "POST":
+#         form = BlogForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "投稿が完了しました。")
+#             return redirect('blogs:index')
+#     else:
+#         form = BlogForm
+#     return render(request, 'blogs/new_blog.html', {'form': form })
 
 
 @login_required
