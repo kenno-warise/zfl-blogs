@@ -139,13 +139,28 @@ class PrivateIndexView(ListView):
 #     return render(request, 'blogs/private_index.html', {'private_blog': private_blog})
 
 
-@login_required
-def private_detail(request, pk):
-    """
-    非公開Blogの詳細
-    """
-    private_detail = get_object_or_404(Blog, id=pk, is_publick=False)
-    return render(request, 'blogs/private_detail.html', {'private_detail': private_detail})
+class PrivateDetailView(DetailView):
+    template_name = 'blogs/private_detail.html'
+    # context_object_name = 'private_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['private_detail'] = get_object_or_404(Blog, id=self.kwargs['pk'], is_publick=False)
+        return context
+
+    def get(self, request, pk):
+        """管理人以外のアクセスはHTMLページでコメントを返す"""
+        if not request.user.is_staff:
+            return HttpResponse('<h1>権限がありません。</h1>')
+        return super().get(request)
+
+# @login_required
+# def private_detail(request, pk):
+#     """
+#     非公開Blogの詳細
+#     """
+#     private_detail = get_object_or_404(Blog, id=pk, is_publick=False)
+#     return render(request, 'blogs/private_detail.html', {'private_detail': private_detail})
 
 
 @login_required

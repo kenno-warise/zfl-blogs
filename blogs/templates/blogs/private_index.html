@@ -61,7 +61,7 @@
 	  / <a href="{% url 'blogs:release' pk=blog.id %}">公開</a>
 	  {% endif %}
 	  </p>
-	  <a class="a-link" href="{% url 'blogs:private_detail' pk=blog.id %}">
+	  <a class="a-link" href="{% url 'blogs:private_detail' blog.pk %}">
 	    <h5 class="mt-0 mb-1">{{ blog.title }}</h5><br>
 	  </a>
 	  <p class="text-black-50">{{ blog.text | slice:':100' | striptags }} ...</p>

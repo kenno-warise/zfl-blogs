@@ -15,8 +15,10 @@
   <!-- BootStrapグリッドシステム -->
   <div class="row">
 
-    <!-- 記事詳細 -->
+    <!-- メインバー -->
     <div class="col-lg-8 col-sm-12 main-bar">
+
+      <!-- メディアカード -->
       <div class="media">
 	<div class="media-body">
 	  <p><img class="d-flex ml-3" src="{{ private_detail.category.thumbnail.url }}" alt="Generic placeholder image"></p>
@@ -27,22 +29,26 @@
 	  </a>
 	</div>
       </div>
+      <!-- メディアカード終 -->
+
+      <!-- 記事詳細 -->
       <div class="blogs-markdown-style">
 	{{ private_detail.text | markdown_to_html | safe }}
-	<hr />
+      </div>
+      <!-- 記事詳細終 -->
+
+      <hr>
 
       <!-- ブログトップに戻るリンク -->
       <a class="text-violet" href="{% url 'blogs:private_index' %}">非表示リスト一覧へ戻る</a>
-      
-      </div>
 
     </div>
-    <!-- 記事詳細 END -->
+    <!-- メインバー終 -->
 
     <!-- サイドバー -->
     <div class="col-lg-4 col-sm-12 side-bar">
     </div>
-    <!-- サイドバー END -->
+    <!-- サイドバー終 -->
 
   </div>
   <!-- BootStrapのグリッドシステム END -->
