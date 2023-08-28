@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, FormView
+from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
 from .models import Blog, Category, Popular
 from .forms import BlogForm
 
@@ -169,6 +169,8 @@ class BlogFormView(FormView):
     get_object_name = "form"
 
     def form_valid(self, form):
+        """検証が終わったらメッセージを表示する"""
+        form.save()
         messages.success(self.request, '新規作成完了')
         return super().form_valid(form)
 
@@ -194,21 +196,40 @@ class BlogFormView(FormView):
 #     return render(request, 'blogs/new_blog.html', {'form': form })
 
 
-@login_required
-def edit_blog(request, blog_id):
-    """
-    Blog更新フォーム
-    """
-    blog = get_object_or_404(Blog, id=blog_id)
-    if request.method == "POST":
-        form = BlogForm(request.POST, instance=blog)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "編集完了しました。")
-            return redirect('blogs:index')
-    else:
-        form = BlogForm(instance=blog)
-    return render(request, 'blogs/edit_blog.html', {'form': form, 'blog': blog })
+class EditBlogFormView(UpdateView):
+    """更新用フォーム"""
+    model = Blog
+    form_class = BlogForm
+    template_name = "blogs/edit_blog.html"
+    success_url = "/blogs/"
+    get_object_name = "blog"
+
+    def form_valid(self, form):
+        """検証が終わったらメッセージを表示する"""
+        messages.success(self.request, '更新完了')
+        return super().form_valid(form)
+
+    def get(self, request, pk):
+        """管理人以外のアクセスはHTMLページでコメントを返す"""
+        if not request.user.is_staff:
+            return HttpResponse('<h1>権限がありません。</h1>')
+        return super().get(request)
+
+# @login_required
+# def edit_blog(request, blog_id):
+#     """
+#     Blog更新フォーム
+#     """
+#     blog = get_object_or_404(Blog, id=blog_id)
+#     if request.method == "POST":
+#         form = BlogForm(request.POST, instance=blog)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "編集完了しました。")
+#             return redirect('blogs:index')
+#     else:
+#         form = BlogForm(instance=blog)
+#     return render(request, 'blogs/edit_blog.html', {'form': form, 'blog': blog })
 
 
 @login_required
