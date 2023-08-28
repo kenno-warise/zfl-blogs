@@ -162,15 +162,15 @@ class PrivateDetailView(DetailView):
 #     return render(request, 'blogs/private_detail.html', {'private_detail': private_detail})
 
 
-class BlogFormView(FormView):
-    template_name = "blogs/new_blog.html"
+class BlogFormView(CreateView):
+    model = Blog
     form_class = BlogForm
+    template_name = "blogs/new_blog.html"
     success_url = "/blogs/"
-    get_object_name = "form"
+    get_object_name = "blog"
 
     def form_valid(self, form):
         """検証が終わったらメッセージを表示する"""
-        form.save()
         messages.success(self.request, '新規作成完了')
         return super().form_valid(form)
 
