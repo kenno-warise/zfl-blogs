@@ -1,6 +1,6 @@
-﻿from django.db import models
-from markdownx.models import MarkdownxField
-from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS
+﻿from django.db import models  # type: ignore
+from markdownx.models import MarkdownxField  # type: ignore
+from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS  # type: ignore
 import markdown
 
 

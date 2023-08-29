@@ -1,19 +1,16 @@
-﻿from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
-from .models import Blog, Category, Popular
-from .forms import BlogForm
+﻿import io
 
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-import io
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set_style('darkgrid')
-import numpy as np
-import japanize_matplotlib
+import matplotlib.pyplot as plt  # type: ignore
+import numpy as np  # type: ignore
+import seaborn as sns  # type: ignore
+from django.contrib import messages  # type: ignore
+from django.http import HttpResponse  # type: ignore
+from django.shortcuts import get_object_or_404, redirect  # type: ignore
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, View  # type: ignore
+from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
+
+from .forms import BlogForm
+from .models import Blog, Category, Popular
 
 
 class IndexView(ListView):
@@ -23,7 +20,7 @@ class IndexView(ListView):
 
     def get_queryset(self):
         """ブログ記事が公開且つIDの古い順にデータを取得"""
-        queryset = Blog.objects.filter(is_publick=True).order_by('-id')
+        queryset = Blog.objects.filter(is_publick=True).order_by("-id")
         return queryset
 
     def get_context_data(self):
@@ -31,6 +28,7 @@ class IndexView(ListView):
         context = super().get_context_data()
         context["populars"] = Popular.objects.all()
         return context
+
 
 # def index(request):
 #     """
@@ -57,14 +55,14 @@ class CategoryView(ListView):
     def get_queryset(self):
         """カテゴリー別でブログ記事が公開且つIDの古い順にデータを取得"""
         # 404エラーを使用した方法
-        category = get_object_or_404(Category, title=self.kwargs['category'])
-        queryset = Blog.objects.filter(is_publick=True, category=category).order_by('-id')
-        
+        category = get_object_or_404(Category, title=self.kwargs["category"])
+        queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
+
         # 404エラーを使わない方法
         # category = self.kwargs['category']
         # queryset = Blog.objects.filter(is_publick=True, category__title=category).order_by('-id')
-        
-        messages.success(self.request, 'カテゴリ：{}'.format(category))
+
+        messages.success(self.request, f"カテゴリ:{category}")
         return queryset
 
     def get_context_data(self):
@@ -72,6 +70,7 @@ class CategoryView(ListView):
         context = super().get_context_data()
         context["populars"] = Popular.objects.all()
         return context
+
 
 # def blogs_category(request, category):
 #     """
@@ -93,21 +92,22 @@ class CategoryView(ListView):
 #     return render(request, 'blogs/index.html', context)
 
 
-class DetailView(DetailView):
+class BlogDetailView(DetailView):
     model = Blog
-    template_name = 'blogs/detail.html'
-    context_object_name = 'blog'
+    template_name = "blogs/detail.html"
+    context_object_name = "blog"
 
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
-        context = super().get_context_data()
-        context["new_articls"] = self.model.objects.filter(is_publick=True).order_by('-id')[:5]
+        context = super().get_context_data(**kwargs)
+        context["new_articls"] = self.model.objects.filter(is_publick=True).order_by("-id")[:5]
         return context
+
 
 # def detail(request, blog_id):
 #     """
 #     Blog詳細ページ
-#     ７月２９日：詳細ページの新着記事数を5記事に修正。
+#     ７月２９日:詳細ページの新着記事数を5記事に修正。
 #     """
 #     blog_new = Blog.objects.filter(is_publick=True).order_by('-id')[:5]
 #     blog = get_object_or_404(Blog, id=blog_id, is_publick=True)
@@ -119,15 +119,16 @@ class DetailView(DetailView):
 
 
 class PrivateIndexView(ListView):
-    queryset = Blog.objects.filter(is_publick=False).order_by('-id')
+    queryset = Blog.objects.filter(is_publick=False).order_by("-id")
     template_name = "blogs/private_index.html"
     context_object_name = "private_blog"
 
     def get(self, request):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
         if not request.user.is_staff:
-            return HttpResponse('<h1>権限がありません。</h1>')
+            return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request)
+
 
 # @login_required
 # def private_index(request):
@@ -139,19 +140,20 @@ class PrivateIndexView(ListView):
 
 
 class PrivateDetailView(DetailView):
-    template_name = 'blogs/private_detail.html'
+    template_name = "blogs/private_detail.html"
     # context_object_name = 'private_detail'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['private_detail'] = get_object_or_404(Blog, id=self.kwargs['pk'], is_publick=False)
+        context = super().get_context_data(**kwargs)
+        context["private_detail"] = get_object_or_404(Blog, id=self.kwargs["pk"], is_publick=False)
         return context
 
     def get(self, request, pk):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
         if not request.user.is_staff:
-            return HttpResponse('<h1>権限がありません。</h1>')
-        return super().get(request)
+            return HttpResponse("<h1>権限がありません。</h1>")
+        return super().get(request, pk)
+
 
 # @login_required
 # def private_detail(request, pk):
@@ -171,14 +173,15 @@ class BlogFormView(CreateView):
 
     def form_valid(self, form):
         """検証が終わったらメッセージを表示する"""
-        messages.success(self.request, '新規作成完了')
+        messages.success(self.request, "新規作成完了")
         return super().form_valid(form)
 
     def get(self, request):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
         if not request.user.is_staff:
-            return HttpResponse('<h1>権限がありません。</h1>')
+            return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request)
+
 
 # @login_required
 # def new_blog(request):
@@ -198,6 +201,7 @@ class BlogFormView(CreateView):
 
 class EditBlogFormView(UpdateView):
     """更新用フォーム"""
+
     model = Blog
     form_class = BlogForm
     template_name = "blogs/edit_blog.html"
@@ -206,14 +210,15 @@ class EditBlogFormView(UpdateView):
 
     def form_valid(self, form):
         """検証が終わったらメッセージを表示する"""
-        messages.success(self.request, '更新完了')
+        messages.success(self.request, "更新完了")
         return super().form_valid(form)
 
     def get(self, request, pk):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
         if not request.user.is_staff:
-            return HttpResponse('<h1>権限がありません。</h1>')
-        return super().get(request)
+            return HttpResponse("<h1>権限がありません。</h1>")
+        return super().get(request, pk)
+
 
 # @login_required
 # def edit_blog(request, blog_id):
@@ -232,51 +237,83 @@ class EditBlogFormView(UpdateView):
 #     return render(request, 'blogs/edit_blog.html', {'form': form, 'blog': blog })
 
 
-@login_required
 def release(request, pk):
-    """
-    Blog公開用
-    """
-    blog_release = get_object_or_404(Blog, id=pk, is_publick=False)
-    blog_release.to_release()
-    return redirect('blogs:private_index')
+    """Blog公開用"""
+    if not request.user.is_staff:
+        blog_release = get_object_or_404(Blog, id=pk, is_publick=False)
+        blog_release.to_release()
+        return redirect("blogs:index")
+    return redirect("blogs:index")
 
 
-@login_required
 def private(request, pk):
-    """
-    Blog非公開用
-    """
-    blog_private = get_object_or_404(Blog, id=pk, is_publick=True)
-    blog_private.to_private()
-    return redirect('blogs:index')
+    """Blog非公開用"""
+    if not request.user.is_staff:
+        blog_private = get_object_or_404(Blog, id=pk, is_publick=True)
+        blog_private.to_private()
+        return redirect("blogs:index")
+    return redirect("blogs:index")
 
 
-def category_graph(request):
-    """
-    Blogカテゴリーのグラフ
+class CategoryGraphView(View):
+    def get(self, request):
+        """Blogカテゴリーのグラフ"""
+        sns.set_style("darkgrid")
+        plt.rcParams.update({"figure.autolayout": True})
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+        fig.patch.set_facecolor("whitesmoke")  # 背景の指定
 
-    """
-    plt.rcParams.update({'figure.autolayout': True})
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
-    fig.patch.set_facecolor('whitesmoke')#背景の指定
+        if not request.headers:
+            ax.bar([0], [0], width=0.3, alpha=0.5)
+            buf = io.BytesIO()
+            canvas = FigureCanvasAgg(fig)
+            canvas.print_png(buf)
+            response = HttpResponse(buf.getvalue(), content_type="image/png")
+            fig.clear()
+            response["Content-Length"] = str(len(response.content))
+            return response
 
-    """ここにデータを作成する"""
-    category_choice = Category.objects.all()
-    blogs_choice = Blog.objects.select_related('category').all()
+        """ここにデータを作成する"""
+        category_choice = Category.objects.all()
+        blogs_choice = Blog.objects.select_related("category").all()
+        x1 = [data.title for data in category_choice]
+        y1 = [data.category_id for data in blogs_choice]
+        y1 = np.unique(y1, return_counts=True)
+        colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
+        ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
+        buf = io.BytesIO()
+        canvas = FigureCanvasAgg(fig)
+        canvas.print_png(buf)
+        response = HttpResponse(buf.getvalue(), content_type="image/png")
+        fig.clear()
+        response["Content-Length"] = str(len(response.content))
+        return response
 
-    x1 = [data.title for data in category_choice]
-    y1 = [data.category_id for data in blogs_choice]
-    y1 = np.unique(y1, return_counts=True)
 
-    colorlist = ['r', 'y', 'g', 'b', 'm', 'c', '#ffff33', '#f781bf']
-    ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
-
-    buf = io.BytesIO()
-    canvas = FigureCanvasAgg(fig)
-    canvas.print_png(buf)
-    response = HttpResponse(buf.getvalue(), content_type='image/png')
-    fig.clear()
-    response['Content-Length'] = str(len(response.content))
-    return response
+# def category_graph(request):
+#     """Blogカテゴリーのグラフ"""
+#     sns.set_style("darkgrid")
+#     plt.rcParams.update({"figure.autolayout": True})
+#     fig = plt.figure()
+#     ax = fig.add_subplot(1, 1, 1)
+#     fig.patch.set_facecolor("whitesmoke")#背景の指定
+#
+#     """ここにデータを作成する"""
+#     category_choice = Category.objects.all()
+#     blogs_choice = Blog.objects.select_related("category").all()
+#
+#     x1 = [data.title for data in category_choice]
+#     y1 = [data.category_id for data in blogs_choice]
+#     y1 = np.unique(y1, return_counts=True)
+#
+#     colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
+#     ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
+#
+#     buf = io.BytesIO()
+#     canvas = FigureCanvasAgg(fig)
+#     canvas.print_png(buf)
+#     response = HttpResponse(buf.getvalue(), content_type="image/png")
+#     fig.clear()
+#     response["Content-Length"] = str(len(response.content))
+#     return response

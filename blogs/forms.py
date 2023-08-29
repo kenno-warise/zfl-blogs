@@ -1,7 +1,7 @@
-from django import forms
+from django import forms  # type: ignore
 from .models import Blog
 
-from markdownx.widgets import MarkdownxWidget
+from markdownx.widgets import MarkdownxWidget  # type: ignore
 
 
 class BlogForm(forms.ModelForm):
