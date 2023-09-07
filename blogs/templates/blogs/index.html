@@ -56,9 +56,11 @@
       {% for blog in blogs %}
       <div class="media">
 	<div class="media-body">
+	  {% if blog.category.thumbnail.bool %}
 	  <p>
 	  <img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
 	  </p>
+	  {% endif %}
 	  <p>
 	  <strong>{{ blog.created_at }}</strong> - 
 	  <strong class="text-warning">{{ blog.category.title }}</strong>

@@ -1,5 +1,4 @@
 from django.test import TestCase  # type: ignore
-from django.urls import reverse  # type: ignore
 
 from .models import Category, Blog, Popular
 from blogs.templatetags.mark import markdown_to_html
