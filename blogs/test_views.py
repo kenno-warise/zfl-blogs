@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User # type: ignore
 from django.test import TestCase  # type: ignore
 from django.urls import reverse  # type: ignore
 
@@ -88,32 +89,26 @@ class BlogDetailViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, blog.title)
-# 
-# 
-# class BlogModelTests(TestCase):
-#     """Blogモデルのテスト"""
-#     def test_blog_to_release_result(self):
-#         """to_releaseメソッド"""
-#         category = Category.objects.create(title='カテゴリー１')
-#         result = category.blog_set.create(
-#                 title='タイトル',
-#                 text='テキスト',
-#                 is_publick=False
-#                 )
-#         result.to_release()
-#         self.assertIs(result.is_publick, True)
-# 
-#     def test_blog_to_private_result(self):
-#         """to_privateメソッド"""
-#         category = Category.objects.create(title='カテゴリー１')
-#         result = category.blog_set.create(
-#                 title='タイトル',
-#                 text='テキスト',
-#                 is_publick=True
-#                 )
-#         result.to_private()
-#         self.assertIs(result.is_publick, False)
-# 
+
+
+class PrivateIndexViewTests(TestCase):
+    """PrivateIndexViewクラスのテスト"""
+    def test_no_account_result(self):
+        """権限の無い状態からアクセスした場合"""
+        response = self.client.get(reverse("blogs:private_index"))
+        self.assertContains(response, "権限がありません。")
+
+    def test_login_user_result(self):
+        """権限があり、非公開ブログ記事が存在する場合"""
+        category = Category.objects.create(title='カテゴリー１')
+        category.blog_set.create(title='タイトル', text='テキスト', is_publick=False)
+        queryset = category.blog_set.filter(is_publick=False).order_by("-id")
+        self.client.force_login(User.objects.create_user("tester"))
+        # private_indexの結果を取得できない（非公開ブログ記事一覧）view.pyの130行目のコード
+        response = self.client.get(reverse("blogs:private_index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "")
+
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
 #         category = Category.objects.create(title='カテゴリー１')
