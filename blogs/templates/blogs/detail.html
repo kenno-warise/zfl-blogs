@@ -22,7 +22,9 @@
       <!-- 看板 -->
       <div class="jumbotron jumbotron-fluid">
 	<div class="container">
+	  {% if blog.category.thumbnail.bool %}
 	  <img class="d-flex mr-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
+	  {% endif %}
 	  <h2 class="display-5"><strong>{% block blogs %}{% block title %}{{ blog.title }}{% endblock %}{% endblock %}</strong></h2>
 	  <p class="lead">
 	  <strong class="text-black-50">投稿日 {{ blog.created_at }}</strong> >> <strong>更新日 {{ blog.updated_at }}</strong>

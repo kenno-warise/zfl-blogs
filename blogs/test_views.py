@@ -77,12 +77,17 @@ class CategoryViewTests(TestCase):
 
 
 
-# class BlogDetailViewTests(TestCase):
-#     """Categoryモデルのテスト"""
-#     def test_category_title_result(self):
-#         """__str__メソッド"""
-#         result = Category(title='カテゴリー１')
-#         self.assertIsInstance(result.__str__(), str)
+class BlogDetailViewTests(TestCase):
+    """BlogDetailViewのテスト"""
+    def test_detail_result(self):
+        """ブログ記事の詳細ページの結果"""
+        category = Category.objects.create(title='カテゴリー１')
+        category.blog_set.create(title="タイトル", text="テキスト", is_publick=True)
+        blog = category.blog_set.get(title="タイトル")
+        url = reverse("blogs:detail", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, blog.title)
 # 
 # 
 # class BlogModelTests(TestCase):
