@@ -109,6 +109,29 @@ class PrivateIndexViewTests(TestCase):
         self.assertQuerysetEqual(response.context["private_blog"], queryset, transform=lambda x:x)
         
 
+class PrivateDetailViewTests(TestCase):
+    """PrivateDetailViewのテスト"""
+    def test_no_account_result(self):
+        """権限の無い状態からアクセスした場合"""
+        category = Category.objects.create(title='カテゴリー１')
+        category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        blog = category.blog_set.get(is_publick=False)
+        url = reverse("blogs:private_detail", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertContains(response, "権限がありません。")
+    
+    def test_login_user_private_detail_result(self):
+        """非公開ブログ記事の詳細ページの結果"""
+        category = Category.objects.create(title='カテゴリー１')
+        category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        blog = category.blog_set.get(is_publick=False)
+        self.client.force_login(User.objects.create_user("tester"))
+        url = reverse("blogs:private_detail", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, blog.title)
+
+
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
 #         category = Category.objects.create(title='カテゴリー１')

@@ -140,6 +140,7 @@ class PrivateIndexView(ListView):
 
 
 class PrivateDetailView(DetailView):
+    model = Blog
     template_name = "blogs/private_detail.html"
     # context_object_name = 'private_detail'
 
@@ -150,7 +151,7 @@ class PrivateDetailView(DetailView):
 
     def get(self, request, pk):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
-        if not request.user.is_staff:
+        if not request.user.is_authenticated:
             return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request, pk)
 
