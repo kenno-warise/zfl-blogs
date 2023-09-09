@@ -125,7 +125,7 @@ class PrivateIndexView(ListView):
 
     def get(self, request):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
-        if not request.user.is_staff:
+        if not request.user.is_authenticated:
             return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request)
 

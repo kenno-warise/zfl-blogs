@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User # type: ignore
 from django.test import TestCase  # type: ignore
+from django.test.client import RequestFactory # type: ignore
 from django.urls import reverse  # type: ignore
 
 from .models import Category, Blog, Popular
@@ -104,10 +105,9 @@ class PrivateIndexViewTests(TestCase):
         category.blog_set.create(title='タイトル', text='テキスト', is_publick=False)
         queryset = category.blog_set.filter(is_publick=False).order_by("-id")
         self.client.force_login(User.objects.create_user("tester"))
-        # private_indexの結果を取得できない（非公開ブログ記事一覧）view.pyの130行目のコード
         response = self.client.get(reverse("blogs:private_index"))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "")
+        self.assertQuerysetEqual(response.context["private_blog"], queryset, transform=lambda x:x)
+        
 
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
