@@ -1,8 +1,6 @@
 .venv
 db.sqlite3
 __pycache__
-**/migrations/0*.py
-!**/migrations/__init__.py
 dist
 media
 .python-version
