@@ -21,11 +21,14 @@ try:
         ZEROFROMLIGHT_KEYS = json.load(secret_file)
 
 except FileNotFoundError:
-    ZEROFROMLIGHT_DIR = '/home/kenno/pylist/website/secret'
-    ZEROFROMLIGHT_PATH = os.path.join(ZEROFROMLIGHT_DIR, 'secret_key.json')
+    try:
+        ZEROFROMLIGHT_DIR = '/home/kenno/pylist/website/secret'
+        ZEROFROMLIGHT_PATH = os.path.join(ZEROFROMLIGHT_DIR, 'secret_key.json')
 
-    with open(ZEROFROMLIGHT_PATH, 'r') as secret_file:
-        ZEROFROMLIGHT_KEYS = json.load(secret_file)
+        with open(ZEROFROMLIGHT_PATH, 'r') as secret_file:
+            ZEROFROMLIGHT_KEYS = json.load(secret_file)
+    except FileNotFoundError:
+        pass
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
