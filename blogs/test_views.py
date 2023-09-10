@@ -226,27 +226,9 @@ class PrivateTests(TestCase):
         self.assertContains(response, "権限がありません。")
 
 
-#     def test_blog_get_toc_result(self):
-#         """get_tocメソッド"""
-#         category = Category.objects.create(title='カテゴリー１')
-#         text = """[TOC]\n## Hello"""
-#         blog = category.blog_set.create(
-#                 title='タイトル',
-#                 text="[TOC]\n## Hello",
-#                 is_publick=True
-#                 )
-#         text = """<div class="toc">\n<ul>\n<li><a href="#hello">Hello</a></li>\n</ul>\n</div>\n"""
-#         self.assertEqual(blog.get_toc(), text)
-# 
-#     def test_blog_title_result(self):
-#         """__str__メソッド"""
-#         result = Blog(title='タイトル')
-#         self.assertIsInstance(result.__str__(), str)
-# 
-# 
-# class PopularModelTests(TestCase):
-#     """Popularモデルのテスト"""
-#     def test_popular_title_result(self):
-#         """__str__メソッド"""
-#         result = Popular(title='人気記事')
-#         self.assertIsInstance(result.__str__(), str)
+class CategoryGraphTests(TestCase):
+    """Categorygraphのテスト"""
+    def test_categorygraph_plot(self):
+        """グラフがアクセスされるか"""
+        response = self.client.get(reverse("blogs:category_graph"))
+        self.assertEqual(response.status_code, 200)

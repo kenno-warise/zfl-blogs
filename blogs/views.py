@@ -264,16 +264,17 @@ class CategoryGraphView(View):
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
         fig.patch.set_facecolor("whitesmoke")  # 背景の指定
-
-        if not request.headers:
-            ax.bar([0], [0], width=0.3, alpha=0.5)
-            buf = io.BytesIO()
-            canvas = FigureCanvasAgg(fig)
-            canvas.print_png(buf)
-            response = HttpResponse(buf.getvalue(), content_type="image/png")
-            fig.clear()
-            response["Content-Length"] = str(len(response.content))
-            return response
+        
+        # if not request.headers:
+        #     print('のっとリクエストヘッダー')
+        #     ax.bar([0], [0], width=0.3, alpha=0.5)
+        #     buf = io.BytesIO()
+        #     canvas = FigureCanvasAgg(fig)
+        #     canvas.print_png(buf)
+        #     response = HttpResponse(buf.getvalue(), content_type="image/png")
+        #     fig.clear()
+        #     response["Content-Length"] = str(len(response.content))
+        #     return response
 
         """ここにデータを作成する"""
         category_choice = Category.objects.all()
@@ -281,8 +282,9 @@ class CategoryGraphView(View):
         x1 = [data.title for data in category_choice]
         y1 = [data.category_id for data in blogs_choice]
         y1 = np.unique(y1, return_counts=True)
-        colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
-        ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
+        # colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
+        # ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
+        ax.bar(x1, y1[1], width=0.3, alpha=0.5)
         buf = io.BytesIO()
         canvas = FigureCanvasAgg(fig)
         canvas.print_png(buf)
