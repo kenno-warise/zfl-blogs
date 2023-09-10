@@ -1,6 +1,6 @@
-from django import template
-from django.utils.safestring import mark_safe
-from markdownx.utils import markdownify
+from django import template # type: ignore
+from django.utils.safestring import mark_safe # type: ignore
+from markdownx.utils import markdownify # type: ignore
 from markdown.extensions import Extension
 
 

@@ -257,6 +257,8 @@ def private(request, pk):
 
 
 class CategoryGraphView(View):
+    template_name = "blogs/edit_blog.html"
+
     def get(self, request):
         """Blogカテゴリーのグラフ"""
         sns.set_style("darkgrid")
@@ -264,17 +266,6 @@ class CategoryGraphView(View):
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
         fig.patch.set_facecolor("whitesmoke")  # 背景の指定
-        
-        # if not request.headers:
-        #     print('のっとリクエストヘッダー')
-        #     ax.bar([0], [0], width=0.3, alpha=0.5)
-        #     buf = io.BytesIO()
-        #     canvas = FigureCanvasAgg(fig)
-        #     canvas.print_png(buf)
-        #     response = HttpResponse(buf.getvalue(), content_type="image/png")
-        #     fig.clear()
-        #     response["Content-Length"] = str(len(response.content))
-        #     return response
 
         """ここにデータを作成する"""
         category_choice = Category.objects.all()
@@ -291,6 +282,8 @@ class CategoryGraphView(View):
         response = HttpResponse(buf.getvalue(), content_type="image/png")
         fig.clear()
         response["Content-Length"] = str(len(response.content))
+        # 引数requestがリンターで引っかかるので無理に定義しているだけ
+        request.close()
         return response
 
 

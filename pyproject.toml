@@ -63,7 +63,7 @@ dependencies = [
 [tool.hatch.envs.lint.scripts]
 typing = "mypy --install-types --non-interactive {args:blogs/views.py blogs/test_*.py}"
 style = [
-  "ruff --fix {args:blogs/views.py blogs/tests.py}",
+  "ruff --fix {args:blogs/views.py blogs/test_*.py}",
   "black --check --diff {args:blogs/views.py blogs/test_*.py}"
 ]
 all = [
