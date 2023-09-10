@@ -186,6 +186,46 @@ class EditBlogFormViewTests(TestCase):
         self.assertContains(response, "記事詳細へ戻る")
 
 
+class ReleaseTests(TestCase):
+    """release関数のテスト"""
+    def test_blog_release_redirect(self):
+        """特定のブログ記事が公開にアクセスされた際のリダイレクト先へ遷移するテスト"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        self.client.force_login(User.objects.create_user("tester"))
+        url = reverse("blogs:release", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertRedirects(response, "/blogs/")
+
+    def test_no_account_blog_release_access(self):
+        """権限の無い状態から特定のブログ記事の公開にアクセスされた際のHttpResponse"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        url = reverse("blogs:release", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertContains(response, "権限がありません。")
+
+
+class PrivateTests(TestCase):
+    """private関数のテスト"""
+    def test_blog_private_redirect(self):
+        """特定のブログ記事が非公開にアクセスされた際のリダイレクト先へ遷移するテスト"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=True)
+        self.client.force_login(User.objects.create_user("tester"))
+        url = reverse("blogs:private", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertRedirects(response, "/blogs/private_index/")
+
+    def test_no_account_blog_private_access(self):
+        """権限の無い状態から特定のブログ記事の非公開にアクセスされた際のHttpResponse"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        url = reverse("blogs:private", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertContains(response, "権限がありません。")
+
+
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
 #         category = Category.objects.create(title='カテゴリー１')
