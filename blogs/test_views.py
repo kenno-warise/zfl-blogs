@@ -132,6 +132,29 @@ class PrivateDetailViewTests(TestCase):
         self.assertContains(response, blog.title)
 
 
+class BlogFormViewTests(TestCase):
+    """BlogFormViewのテスト"""
+    def test_blog_post_redirect(self):
+        """ブログが保存され、リダイレクト先へ遷移するテスト"""
+        category = Category.objects.create(title='カテゴリー１')
+        response = self.client.post(
+                path=reverse("blogs:new_blog"),
+                data={"category": 1, "title": "タイトル", "text": "テキスト", "is_publick": True},
+        )
+        self.assertRedirects(response, "/blogs/")
+
+    def test_no_account_new_blog_access(self):
+        """権限の無い状態からブログ作成ページにアクセスした場合"""
+        response = self.client.get(reverse("blogs:new_blog"))
+        self.assertContains(response, "権限がありません。")
+
+    def test_login_user_new_blog_access(self):
+        """ログインユーザーがブログ作成ページにアクセスした結果"""
+        self.client.force_login(User.objects.create_user("tester"))
+        response = self.client.get(reverse("blogs:new_blog"))
+        self.assertContains(response, "非表示リスト一覧へ戻る")
+
+
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
 #         category = Category.objects.create(title='カテゴリー１')

@@ -179,7 +179,7 @@ class BlogFormView(CreateView):
 
     def get(self, request):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
-        if not request.user.is_staff:
+        if not request.user.is_authenticated:
             return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request)
 
@@ -216,7 +216,7 @@ class EditBlogFormView(UpdateView):
 
     def get(self, request, pk):
         """管理人以外のアクセスはHTMLページでコメントを返す"""
-        if not request.user.is_staff:
+        if not request.user.is_authenticated:
             return HttpResponse("<h1>権限がありません。</h1>")
         return super().get(request, pk)
 
@@ -240,7 +240,7 @@ class EditBlogFormView(UpdateView):
 
 def release(request, pk):
     """Blog公開用"""
-    if not request.user.is_staff:
+    if request.user.is_authenticated:
         blog_release = get_object_or_404(Blog, id=pk, is_publick=False)
         blog_release.to_release()
         return redirect("blogs:index")
@@ -249,7 +249,7 @@ def release(request, pk):
 
 def private(request, pk):
     """Blog非公開用"""
-    if not request.user.is_staff:
+    if request.user.is_authenticated:
         blog_private = get_object_or_404(Blog, id=pk, is_publick=True)
         blog_private.to_private()
         return redirect("blogs:index")
