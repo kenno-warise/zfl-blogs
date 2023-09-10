@@ -155,6 +155,37 @@ class BlogFormViewTests(TestCase):
         self.assertContains(response, "非表示リスト一覧へ戻る")
 
 
+class EditBlogFormViewTests(TestCase):
+    """EditBlogFormViewのテスト"""
+    def test_blog_edit_redirect(self):
+        """ブログが更新され、リダイレクト先へ遷移するテスト"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        url = reverse("blogs:edit_blog", args=(blog.id,))
+        response = self.client.post(
+                path=url,
+                data={"category": 1, "title": "タイトル", "text": "テキスト", "is_publick": True},
+        )
+        self.assertRedirects(response, "/blogs/")
+
+    def test_from_no_account_editblog_access(self):
+        """権限の無い状態からブログ更新ページにアクセスした場合"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        url = reverse("blogs:edit_blog", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertContains(response, "権限がありません。")
+
+    def test_from_login_user_editblog_access(self):
+        """ログインユーザーがブログ更新ページにアクセスした結果"""
+        category = Category.objects.create(title='カテゴリー１')
+        blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        self.client.force_login(User.objects.create_user("tester"))
+        url = reverse("blogs:edit_blog", args=(blog.id,))
+        response = self.client.get(url)
+        self.assertContains(response, "記事詳細へ戻る")
+
+
 #     def test_blog_get_toc_result(self):
 #         """get_tocメソッド"""
 #         category = Category.objects.create(title='カテゴリー１')
