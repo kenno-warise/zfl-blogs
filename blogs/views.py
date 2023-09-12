@@ -23,11 +23,11 @@ class IndexView(ListView):
         queryset = Blog.objects.filter(is_publick=True).order_by("-id")
         return queryset
 
-    def get_context_data(self):
-        """テンプレートへ渡すPopularインスタンスの作成"""
-        context = super().get_context_data()
-        context["populars"] = Popular.objects.all()
-        return context
+    # def get_context_data(self):
+    #     """テンプレートへ渡すPopularインスタンスの作成"""
+    #     context = super().get_context_data()
+    #     context["populars"] = Popular.objects.all()
+    #     return context
 
 
 # def index(request):
