@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Blog, Popular
+from .models import Category, Blog
 from markdownx.admin import MarkdownxModelAdmin
 from django.db import models
 from markdownx.widgets import AdminMarkdownxWidget
@@ -17,4 +17,4 @@ class BlogAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Blog, BlogAdmin)
-admin.site.register(Popular)
+# admin.site.register(Popular)

@@ -10,7 +10,7 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView, V
 from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
 
 from .forms import BlogForm
-from .models import Blog, Category, Popular
+from .models import Blog, Category
 
 
 class IndexView(ListView):
@@ -65,11 +65,11 @@ class CategoryView(ListView):
         messages.success(self.request, f"カテゴリ:{category}")
         return queryset
 
-    def get_context_data(self):
-        """テンプレートへ渡すPopularインスタンスの作成"""
-        context = super().get_context_data()
-        context["populars"] = Popular.objects.all()
-        return context
+    # def get_context_data(self):
+    #     """テンプレートへ渡すPopularインスタンスの作成"""
+    #     context = super().get_context_data()
+    #     context["populars"] = Popular.objects.all()
+    #     return context
 
 
 # def blogs_category(request, category):

@@ -67,19 +67,19 @@ class Blog(models.Model):
         verbose_name_plural = 'ブログリスト'
 
 
-class Popular(models.Model):
-    """
-    GoogleAnalytics APIモデル
-    blogsアプリで使用しているので、後にblogsアプリに移行
-
-    """
-    title = models.CharField('人気記事', max_length=100)
-    path = models.CharField('URL', max_length=100)
-    view = models.IntegerField('閲覧数')
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = '人気記事リスト'
-        verbose_name_plural = '人気記事リスト'
+# class Popular(models.Model):
+#     """
+#     GoogleAnalytics APIモデル
+#     blogsアプリで使用しているので、後にblogsアプリに移行
+# 
+#     """
+#     title = models.CharField('人気記事', max_length=100)
+#     path = models.CharField('URL', max_length=100)
+#     view = models.IntegerField('閲覧数')
+# 
+#     def __str__(self):
+#         return self.title
+# 
+#     class Meta:
+#         verbose_name = '人気記事リスト'
+#         verbose_name_plural = '人気記事リスト'
