@@ -1,5 +1,6 @@
 ﻿
 <!-- 良くアクセスされている記事 -->
+{% if populars %}
 <div>
   <div class="alert alert-danger" role="alert">
     <strong>人気記事 Top 10</strong>
@@ -14,4 +15,4 @@
     {% endfor %}
   </ol>
 </div>
-
+{% endif %}
