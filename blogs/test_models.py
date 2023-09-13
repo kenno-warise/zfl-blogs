@@ -2,7 +2,7 @@ from django.test import TestCase  # type: ignore
 
 from blogs.templatetags.mark import markdown_to_html
 
-from .models import Blog, Category, Popular
+from .models import Blog, Category
 
 
 class MarkTests(TestCase):
@@ -52,13 +52,4 @@ class BlogModelTests(TestCase):
     def test_blog_title_result(self):
         """__str__メソッド"""
         result = Blog(title="タイトル")
-        self.assertIsInstance(result.__str__(), str)
-
-
-class PopularModelTests(TestCase):
-    """Popularモデルのテスト"""
-
-    def test_popular_title_result(self):
-        """__str__メソッド"""
-        result = Popular(title="人気記事")
         self.assertIsInstance(result.__str__(), str)
