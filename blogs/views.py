@@ -1,6 +1,5 @@
 ﻿import io
 
-import japanize_matplotlib  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np  # type: ignore
 import seaborn as sns  # type: ignore
@@ -12,9 +11,6 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
 
 from .forms import BlogForm
 from .models import Blog, Category
-
-# コード解析ツールで削除されないように定義
-_ = japanize_matplotlib
 
 
 class IndexView(ListView):
@@ -266,6 +262,10 @@ class CategoryGraphView(View):
     def get(self, request):
         """Blogカテゴリーのグラフ"""
         sns.set_style("darkgrid")
+
+        import japanize_matplotlib  # type: ignore
+
+        _ = japanize_matplotlib
         plt.rcParams.update({"figure.autolayout": True})
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
