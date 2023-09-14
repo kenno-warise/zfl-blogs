@@ -6,7 +6,7 @@ import numpy as np  # type: ignore
 from django.contrib import messages  # type: ignore
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import get_object_or_404, redirect  # type: ignore
-from django.views.generic import CreateView, DetailView, ListView, UpdateView  # type: ignore
+from django.views.generic import CreateView, DetailView, ListView, UpdateView, View  # type: ignore
 from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
 
 from .forms import BlogForm
