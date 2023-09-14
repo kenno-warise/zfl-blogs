@@ -3,7 +3,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 
-![zfl-blogs_1](https://github.com/kenno-warise/zfl-blogs/assets/51676019/101146d5-4065-4a67-94b7-d2f0a084359b)
+![zfl-blogs_1](https://github.com/kenno-warise/zfl-blogs/assets/51676019/15ebe6db-72d4-4bd2-94ed-2d24f829b1e3)
 
 -----
 
