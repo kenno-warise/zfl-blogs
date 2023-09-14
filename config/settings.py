@@ -88,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'blogs.context.common',
             ],
+            # カスタムテンプレートタグ
             'libraries': {
                 'mark': 'blogs.templatetags.mark',
             }

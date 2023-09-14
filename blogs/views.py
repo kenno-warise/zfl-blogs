@@ -1,12 +1,12 @@
 ﻿import io
 
+import japanize_matplotlib  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np  # type: ignore
-import seaborn as sns  # type: ignore
 from django.contrib import messages  # type: ignore
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import get_object_or_404, redirect  # type: ignore
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, View  # type: ignore
+from django.views.generic import CreateView, DetailView, ListView, UpdateView  # type: ignore
 from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
 
 from .forms import BlogForm
@@ -261,15 +261,22 @@ class CategoryGraphView(View):
 
     def get(self, request):
         """Blogカテゴリーのグラフ"""
-        sns.set_style("darkgrid")
 
-        import japanize_matplotlib  # type: ignore
-
+        # リンターで引っかかるので定義
         _ = japanize_matplotlib
         plt.rcParams.update({"figure.autolayout": True})
-        fig = plt.figure()
+        fig = plt.figure(facecolor="whitesmoke")
         ax = fig.add_subplot(1, 1, 1)
-        fig.patch.set_facecolor("whitesmoke")  # 背景の指定
+        ax.set_facecolor("whitesmoke")  # プロット内の背景色
+
+        # グラフの枠線を削除
+        plt.gca().spines['right'].set_visible(False)
+        plt.gca().spines['top'].set_visible(False)
+        plt.gca().spines['bottom'].set_visible(False)
+        plt.gca().spines['left'].set_visible(False)
+
+        # ラベルの補助線を削除
+        plt.tick_params(bottom=False, left=False, right=False, top=False)
 
         """ここにデータを作成する"""
         category_choice = Category.objects.all()
@@ -277,15 +284,15 @@ class CategoryGraphView(View):
         x1 = [data.title for data in category_choice]
         y1 = [data.category_id for data in blogs_choice]
         y1 = np.unique(y1, return_counts=True)
-        # colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
-        # ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
-        ax.bar(x1, y1[1], width=0.3, alpha=0.5)
+        colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
+        ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
         buf = io.BytesIO()
         canvas = FigureCanvasAgg(fig)
         canvas.print_png(buf)
         response = HttpResponse(buf.getvalue(), content_type="image/png")
         fig.clear()
         response["Content-Length"] = str(len(response.content))
+        
         # 引数requestがリンターで引っかかるので無理に定義しているだけ
         request.close()
         return response
