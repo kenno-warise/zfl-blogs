@@ -50,8 +50,9 @@ TEMPLATES = [
                 ...
                 'blogs.context.common',
             ],
+            # カスタムテンプレートフィルター
             'libraries': {
-                'mark': 'templatetags.mark',
+                'mark': 'blogs.templatetags.mark',
             }
         },
     },
@@ -130,10 +131,10 @@ $ python3 manage.py migrate
 $ python3 manage.py createsuperuser
 ```
 
-グーグルアナリティスクすAPIからブログの閲覧数を取得するコマンドの実行
+markdownxで保存された画像を整理するコマンドの実行
 
 ```console
-$ python3 manage.py access_ranking
+$ python3 manage.py file_cleanup
 ```
 
 ## License
