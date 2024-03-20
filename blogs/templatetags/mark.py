@@ -1,10 +1,9 @@
-from django import template # type: ignore
-from django.utils.safestring import mark_safe # type: ignore
-from markdownx.utils import markdownify # type: ignore
-from markdown.extensions import Extension
-
+from django import template  # type: ignore
+from django.utils.safestring import mark_safe  # type: ignore
+from markdownx.utils import markdownify  # type: ignore
 
 register = template.Library()
+
 
 @register.filter
 def markdown_to_html(text):
@@ -15,4 +14,3 @@ def markdown_to_html(text):
 #     def extendMarkdown(self, md):
 #         md.preprocessors.deregister('html_block')
 #         md.inlinePatterns.deregister('html')
-

@@ -45,7 +45,9 @@ class BlogModelTests(TestCase):
         """get_tocメソッド"""
         category = Category.objects.create(title="カテゴリー１")
         text = """[TOC]\n## Hello"""
-        blog = category.blog_set.create(title="タイトル", text="[TOC]\n## Hello", is_publick=True)
+        blog = category.blog_set.create(
+            title="タイトル", text="[TOC]\n## Hello", is_publick=True
+        )
         text = """<div class="toc">\n<ul>\n<li><a href="#hello">Hello</a></li>\n</ul>\n</div>\n"""
         self.assertEqual(blog.get_toc(), text)
 

@@ -102,7 +102,9 @@ class PrivateIndexViewTests(TestCase):
         queryset = category.blog_set.filter(is_publick=False).order_by("-id")
         self.client.force_login(User.objects.create_user("tester"))
         response = self.client.get(reverse("blogs:private_index"))
-        self.assertQuerysetEqual(response.context["private_blog"], queryset, transform=lambda x: x)
+        self.assertQuerysetEqual(
+            response.context["private_blog"], queryset, transform=lambda x: x
+        )
 
 
 class PrivateDetailViewTests(TestCase):
@@ -139,7 +141,8 @@ class BlogFormViewTests(TestCase):
             path=reverse("blogs:new_blog"),
             data={"category": 1, "title": "タイトル", "text": "テキスト", "is_publick": True},
         )
-        self.assertRedirects(response, "/blogs/")
+        redirect_url = reverse("blogs:index")
+        self.assertRedirects(response, redirect_url)
 
     def test_no_account_new_blog_access(self):
         """権限の無い状態からブログ作成ページにアクセスした場合"""
@@ -161,11 +164,12 @@ class EditBlogFormViewTests(TestCase):
         category = Category.objects.create(title="カテゴリー１")
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
         url = reverse("blogs:edit_blog", args=(blog.id,))
+        redirect_url = reverse("blogs:index")
         response = self.client.post(
             path=url,
             data={"category": 1, "title": "タイトル", "text": "テキスト", "is_publick": True},
         )
-        self.assertRedirects(response, "/blogs/")
+        self.assertRedirects(response, redirect_url)
 
     def test_from_no_account_editblog_access(self):
         """権限の無い状態からブログ更新ページにアクセスした場合"""
@@ -194,8 +198,9 @@ class ReleaseTests(TestCase):
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
         self.client.force_login(User.objects.create_user("tester"))
         url = reverse("blogs:release", args=(blog.id,))
+        redirect_url = reverse("blogs:index")
         response = self.client.get(url)
-        self.assertRedirects(response, "/blogs/")
+        self.assertRedirects(response, redirect_url)
 
     def test_no_account_blog_release_access(self):
         """権限の無い状態から特定のブログ記事の公開にアクセスされた際のHttpResponse"""
@@ -215,8 +220,9 @@ class PrivateTests(TestCase):
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=True)
         self.client.force_login(User.objects.create_user("tester"))
         url = reverse("blogs:private", args=(blog.id,))
+        redirect_url = reverse("blogs:private_index")
         response = self.client.get(url)
-        self.assertRedirects(response, "/blogs/private_index/")
+        self.assertRedirects(response, redirect_url)
 
     def test_no_account_blog_private_access(self):
         """権限の無い状態から特定のブログ記事の非公開にアクセスされた際のHttpResponse"""

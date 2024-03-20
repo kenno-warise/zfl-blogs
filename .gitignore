@@ -1,9 +1,10 @@
-.venv
-db.sqlite3
-__pycache__
-dist
-media
-.python-version
 .coverage
 .mypy_cache
+.python-version
 .ruff_cache
+.venv
+__pycache__
+db.sqlite3
+dist
+media
+venv

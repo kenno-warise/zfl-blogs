@@ -1,17 +1,18 @@
-from django.contrib import admin
-from .models import Category, Blog
-from markdownx.admin import MarkdownxModelAdmin
-from django.db import models
-from markdownx.widgets import AdminMarkdownxWidget
+from django.contrib import admin  # type: ignore
+from django.db import models  # type: ignore
+from markdownx.widgets import AdminMarkdownxWidget  # type: ignore
+
+from .models import Blog, Category
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title')
-    list_display_links = ('id', 'title')
+    list_display = ("id", "title")
+    list_display_links = ("id", "title")
+
 
 class BlogAdmin(admin.ModelAdmin):
     formfield_overrides = {
-            models.TextField: {'widget': AdminMarkdownxWidget},
+        models.TextField: {"widget": AdminMarkdownxWidget},
     }
 
 
