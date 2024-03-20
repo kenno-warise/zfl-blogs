@@ -61,24 +61,49 @@ dependencies = [
   "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:blogs/views.py blogs/test_*.py}"
+typing = "mypy --check-untyped-defs --install-types --non-interactive {args:blogs}"
 style = [
-  "ruff --fix {args:blogs/views.py blogs/test_*.py}",
-  "black --check --diff {args:blogs/views.py blogs/test_*.py}"
+  "ruff check --fix {args:blogs}",
+  "black --check --diff {args:blogs}"
 ]
 all = [
   "style",
   "typing",
 ]
 
+[tool.mypy]
+exclude = [
+  "__init__.py",
+  "__pycache__",
+  "migrations",
+  "apps.py",  
+]
+
 [tool.black]
-# target-version = ["py37"]
-line-length = 120
+exclude = """
+migrations
+"""
+target-version = ["py37"]
+line-length = 90
 skip-string-normalization = true
 
 [tool.ruff]
-# target-version = "py37"
+exclude = [
+  "blogs/migrations",
+  "blogs/__init__.py",
+  "blogs/apps.py",
+  # 以下は次回行う
+  "blogs/admin.py",
+  "blogs/context.py",
+  "blogs/forms.py",
+  "blogs/management",
+  "blogs/models.py",
+  "blogs/templatetags",
+]
+target-version = "py37"
 line-length = 120
+
+[tool.ruff.lint]
 select = [
   "A",
   "ARG",
@@ -127,5 +152,5 @@ ignore = [
 # 以下は配布用Djangoアプリに対しての設定
 [tool.hatch.build]
 include = ["blogs/*"]
-exclude = ["blogs/migrations/*"]
+# exclude = ["blogs/migrations/*"]
 
