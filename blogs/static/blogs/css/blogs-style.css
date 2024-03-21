@@ -3,11 +3,11 @@
   padding: 20px;
 }
 
-.main-bar .jumbotron {
+.main-bar .jumbotron-blogs {
   background-color: white;
 }
 
-.main-bar .media {
+.main-bar .media-blogs {
   padding-bottom: 5%;
   border-bottom: 1px solid violet;
   margin-bottom: 5%;
@@ -19,11 +19,11 @@
   background-color: whitesmoke;
 }
 
-.side-bar .media {
+.side-bar .media-blogs {
   margin-bottom: 5%;
 }
 
-.side-bar .media .media {
+.side-bar .media-blogs .media {
   padding-top: 5%;
   border-top: 1px solid violet;
   margin-bottom: 5%;

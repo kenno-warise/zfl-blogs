@@ -19,18 +19,19 @@
     <div class="col-lg-8 col-sm-12 main-bar">
 
       <!-- 看板 -->
-      <div class="jumbotron jumbotron-fluid">
+      <div class="jumbotron jumbotron-fluid jumbotron-blogs">
 	<div class="container">
 	  <div style="display: flex;">
 	    <img class="d-flex align-self-center mr-3" src="{% static 'home/image/home_blogs.png' %}" alt="Generic placeholder image">
 	    <h2>{% block title %}Blog{% endblock %}</h2>
 	  </div>
-	  <p class="lead">  
 	  <a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
+	  
+	  <ul>
 	  {% for category in category_list %}
-	  <a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:category' category %}">{{ category }}</a>
-	  {% endfor %}
-	  </p>
+	  <li><a href="{% url 'blogs:category' category %}">{{ category }}</a>
+	  </li>{% endfor %}
+	  <ul>
 	</div>
       </div><!-- 看板終 -->
 
@@ -56,7 +57,7 @@
 
       <!-- 記事のリスト -->
       {% for blog in blogs %}
-      <div class="media">
+      <div class="media media-blogs">
 	<div class="media-body">
 	  {% if blog.category.thumbnail.bool %}
 	  <p>
