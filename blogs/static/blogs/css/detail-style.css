@@ -1,4 +1,9 @@
-/* 詳細ページ内 */
+/* blogs/detail.html */
+
+
+.main-bar .jumbotron-detail {
+  background-color: white;
+}
 
 
 /* サイドバーの新着記事固定 blogs/new_article.html */

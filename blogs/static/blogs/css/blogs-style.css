@@ -1,40 +1,12 @@
 /* 各ページのメインバー ------------*/
-.main-bar {
+.main-bar-blogs {
   padding: 20px;
 }
 
-.main-bar .jumbotron-blogs {
-  background-color: white;
-}
-
-.main-bar .media-blogs {
-  padding-bottom: 5%;
-  border-bottom: 1px solid violet;
-  margin-bottom: 5%;
-}
-
-/* 各ページのサイドバー ------------*/
-.side-bar {
-  padding: 30px;
-  background-color: whitesmoke;
-}
-
-.side-bar .media-blogs {
-  margin-bottom: 5%;
-}
-
-.side-bar .media-blogs .media {
-  padding-top: 5%;
-  border-top: 1px solid violet;
-  margin-bottom: 5%;
-}
-
-/* ブログのトップページ------------- */
-/* index.html */
-
+/* blogs/index.html -------------*/
 .jumbotron-blogs {
   text: center;
-  background-color: dimgray;
+  background-color: white;
 }
 
 /* index.html blog_private.html */
@@ -42,6 +14,29 @@
   color: black;
 }
 
+.main-bar-blogs .media-blogs {
+  padding-bottom: 5%;
+  border-bottom: 1px solid violet;
+  margin-bottom: 5%;
+}
+
+/* 各ページのサイドバー ------------*/
+.side-bar-blogs {
+  padding: 30px;
+  background-color: whitesmoke;
+}
+
+.side-bar-blogs .media-blogs {
+  margin-bottom: 5%;
+}
+
+.side-bar-blogs .media-blogs .media {
+  padding-top: 5%;
+  border-top: 1px solid violet;
+  margin-bottom: 5%;
+}
+
+/* ブログのトップページ------------- */
 
 /* index.html detail.html blog_private.html private_detail.html */
 .media-body {

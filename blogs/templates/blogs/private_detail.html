@@ -17,10 +17,10 @@
   <div class="row">
 
     <!-- メインバー -->
-    <div class="col-lg-8 col-sm-12 main-bar">
+    <div class="col-lg-8 col-sm-12 main-bar-blogs">
 
       <!-- 看板 -->
-      <div class="jumbotron jumbotron-fluid">
+      <div class="jumbotron jumbotron-fluid jumbotron-detail">
 	<div class="container">
 	  {% if private_detail.category.thumbnail.bool %}
 	  <p><img class="d-flex ml-3" src="{{ private_detail.category.thumbnail.url }}" alt="Generic placeholder image"></p>
@@ -48,13 +48,13 @@
       <hr>
 
       <!-- ブログトップに戻るリンク -->
-      <a class="text-violet" href="{% url 'blogs:private_index' %}">非表示リスト一覧へ戻る</a>
+      <a class="text-violet-home" href="{% url 'blogs:private_index' %}">非表示リスト一覧へ戻る</a>
 
     </div>
     <!-- メインバー終 -->
 
     <!-- サイドバー -->
-    <div class="col-lg-4 col-sm-12 side-bar">
+    <div class="col-lg-4 col-sm-12 side-bar-blogs">
     </div>
     <!-- サイドバー終 -->
 

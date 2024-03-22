@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block blogs-style %}
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="{% static 'blogs/css/blogs-style.css' %}">
 {% endblock blogs-style %}
 
@@ -16,22 +14,21 @@
   <div class="row">
 
     <!-- メインバー -->
-    <div class="col-lg-8 col-sm-12 main-bar">
+    <div class="col-lg-8 col-sm-12 main-bar-blogs">
 
       <!-- 看板 -->
       <div class="jumbotron jumbotron-fluid jumbotron-blogs">
 	<div class="container">
 	  <div style="display: flex;">
-	    <img class="d-flex align-self-center mr-3" src="{% static 'home/image/home_blogs.png' %}" alt="Generic placeholder image">
+	    <img class="d-flex align-self-center mr-3" src="{% static 'blogs/image/blogs_img.png' %}" alt="Generic placeholder image">
 	    <h2>{% block title %}Blog{% endblock %}</h2>
 	  </div>
-	  <a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
-	  
-	  <ul>
-	  {% for category in category_list %}
-	  <li><a href="{% url 'blogs:category' category %}">{{ category }}</a>
-	  </li>{% endfor %}
-	  <ul>
+	<p class="lead">
+	<a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
+	{% for category in category_list %}
+	<a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:category' category %}">{{ category }}</a>
+	{% endfor %}
+	</p>
 	</div>
       </div><!-- 看板終 -->
 
@@ -86,7 +83,7 @@
     <!-- メインバー終 -->
 
     <!-- サイドバー -->
-    <div class="col-lg-4 col-sm-12 side-bar">
+    <div class="col-lg-4 col-sm-12 side-bar-blogs">
 
       <!-- ブログ記事アクセスのランキング表示 （一時停止）
       { include 'blogs/top_10_ranking.html' %} -->
@@ -115,11 +112,5 @@
   <!-- BootStrapのグリッドシステム終 -->
 
 </div>
-
-<!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<!-- BootStrap JS -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 {% endblock %}
