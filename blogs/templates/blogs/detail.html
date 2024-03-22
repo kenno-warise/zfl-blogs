@@ -17,10 +17,10 @@
   <div class="row">
 
     <!-- メインバー -->
-    <div class="col-lg-8 col-sm-12 main-bar">
+    <div class="col-lg-8 col-sm-12 main-bar-blogs">
 
       <!-- 看板 -->
-      <div class="jumbotron jumbotron-fluid">
+      <div class="jumbotron jumbotron-fluid jumbotron-detail">
 	<div class="container">
 	  {% if blog.category.thumbnail.bool %}
 	  <img class="d-flex mr-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
@@ -59,7 +59,7 @@
     <!-- メインバー終 -->
 
     <!-- サイドバー -->
-    <div class="col-lg-4 col-sm-12 side-bar">
+    <div class="col-lg-4 col-sm-12 side-bar-blogs">
 
       <!-- 新着記事リスト -->
       {% include 'blogs/new_articls.html'%}
