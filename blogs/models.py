@@ -1,28 +1,33 @@
 ﻿import markdown
 from django.db import models  # type: ignore
+from django.utils import timezone  # type: ignore
+from django.utils.text import slugify # type: ignore
 from markdownx.models import MarkdownxField  # type: ignore
 from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS  # type: ignore
 
 
 class Category(models.Model):
-    """
-    カテゴリーモデル
+    """カテゴリーモデル"""
 
-    """
-
-    title = models.CharField(
-        "カテゴリー",
-        max_length=20,
-    )
+    title = models.CharField("カテゴリー", max_length=20)
     thumbnail = models.ImageField(
         "サムネイル（空欄可）",
-        upload_to="thumbnail",
+        upload_to="blogs/category/thumbnail",
         null=True,
         blank=True,
     )
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+    overview = models.CharField("概要", null=True, blank=True, max_length=256)
+    slug = models.SlugField(null=True, blank=True, unique=True)
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "ブログカテゴリーリスト"
@@ -30,10 +35,7 @@ class Category(models.Model):
 
 
 class Blog(models.Model):
-    """
-    記事作成モデル
-
-    """
+    """記事作成モデル"""
 
     title = models.CharField("タイトル", max_length=150)
     text = MarkdownxField("テキスト", help_text="Markdown形式で書いてください。")
@@ -46,6 +48,13 @@ class Blog(models.Model):
             (True, "公開"),
             (False, "非公開"),
         ),
+    )
+    release_date = models.DateField(null=True, blank=True)
+    thumbnail = models.ImageField(
+        "サムネイル（空欄可）",
+        upload_to="blogs/blog/thumbnail",
+        null=True,
+        blank=True,
     )
 
     def to_release(self):
@@ -63,6 +72,11 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.is_publick and not self.release_date:
+            self.release_date = timezone.now()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "ブログリスト"
