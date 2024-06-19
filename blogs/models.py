@@ -1,7 +1,7 @@
 ﻿import markdown
 from django.db import models  # type: ignore
 from django.utils import timezone  # type: ignore
-from django.utils.text import slugify # type: ignore
+from django.utils.text import slugify  # type: ignore
 from markdownx.models import MarkdownxField  # type: ignore
 from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS  # type: ignore
 
