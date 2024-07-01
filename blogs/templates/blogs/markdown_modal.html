@@ -1,12 +1,13 @@
 
 <!-- マークダウンの記述例をポップアップで表示 -->
 
-<button type="button" class="btn btn-dark float-right stick" data-toggle="modal" data-target=".bd-example-modal-sm">
-  Markdownx
+<!-- Modal -->
+<button type="button" class="btn btn-dark sticky-top" data-bs-toggle="modal" data-bs-target="#markdownModal">
+  Markdown
 </button>
 
-<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+<div class="modal fade" id="markdownModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
     <div class="modal-content">
       <table class="table">
 	<thead>

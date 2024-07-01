@@ -17,10 +17,12 @@ from .models import Blog, Category
 class IndexView(ListView):
     template_name = "blogs/index.html"
     context_object_name = "blogs"
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         """ブログ記事が公開且つIDの古い順にデータを取得"""
+        # ↓の方法でBlogオブジェクトを取得する
+        # category = get_object_or_404(Category, title=self.kwargs["category"])
         queryset = Blog.objects.filter(is_publick=True).order_by("-id")
         return queryset
 
@@ -28,14 +30,14 @@ class IndexView(ListView):
 class CategoryView(ListView):
     template_name = "blogs/index.html"
     context_object_name = "blogs"
-    paginate_by = 10
+    paginate_by = 12
 
     def get_queryset(self):
         """カテゴリー別でブログ記事が公開且つIDの古い順にデータを取得"""
         # 404エラーを使用した方法
         category = get_object_or_404(Category, title=self.kwargs["category"])
         queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
-        messages.success(self.request, f"カテゴリ:{category}")
+        messages.success(self.request, category)
         return queryset
 
 
@@ -87,7 +89,7 @@ class PrivateDetailView(DetailView):
 class BlogFormView(CreateView):
     model = Blog
     form_class = BlogForm
-    template_name = "blogs/new_blog.html"
+    template_name = "blogs/create.html"
     success_url = reverse_lazy("blogs:index")
     get_object_name = "blog"
 
@@ -108,7 +110,7 @@ class EditBlogFormView(UpdateView):
 
     model = Blog
     form_class = BlogForm
-    template_name = "blogs/edit_blog.html"
+    template_name = "blogs/edit.html"
     success_url = reverse_lazy("blogs:index")
     get_object_name = "blog"
 

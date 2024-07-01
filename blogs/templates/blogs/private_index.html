@@ -1,87 +1,75 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load mark %}
 
 {% block blogs-style %}
-<link rel="stylesheet" href="{% static 'blogs/css/blogs-style.css' %}">
+<link rel="stylesheet" href="{% static 'blogs/css/index-style.css' %}">
 {% endblock blogs-style %}
 
 {% block content %}
 
-<div class="container">
+<!-- ナビバーを読み込み -->
+{% include 'blogs/include_navbar.html' %}
 
-  <!-- Bootstrapのグリッドシステム -->
-  <div class="row">
+<!-- 看板 -->
+{% if messages %}
+{% for message in messages %}
+<figure class="text-center" style="background-color: gainsboro;">
+  <blockquote class="blockquote">
+    <h1 class="display-2">{{ message }} {{ blogs.count }}件<h1>
+  </blockquote>
+  <br>
+  <figcaption class="blockquote-footer">
+    カテゴリー
+  </figcaption>
+</figure>
+{% endfor %}
+{% else %}
+<figure class="text-center" style="background-color: gainsboro;">
+  <blockquote class="blockquote">
+    <h1 class="display-1">非公開リスト {{ private_blog.count }}件</h1>
+  </blockquote>
+  <br>
+  <figcaption class="blockquote-footer">
+    非公開にしている記事のリストページです
+  </figcaption>
+</figure>
+{% endif %}
+<!-- 看板終了 -->
 
-    <!-- メインバー -->
-    <div class="col-lg-8 col-sm 12 main-bar-blogs">
-
-      <!-- 大型ディスプレイ -->
-      <div class="jumbotron jumbotron-fluid jumbotron-blogs">
-	<div class="container">
-	  <h1 class="display-4">{% block title %}非公開リスト{% endblock %}</h1>
-	</div>
-      </div>
-      <!-- 大型ディスプレイ終 -->
-
-      <!-- ブログトップのリンク -->
-      <a type="button" class="btn btn-success btn-sm" href="{% url 'blogs:index' %}">ブログトップ</a>
-
-      <!-- 記事投稿件数 -->
-      {% if blog_private.cunt != 0 %}
-      <p>投稿<strong>{{ private_blog.count }}</strong>件</p>
-      {% endif %}
-
-      <!-- 記事の投稿完了・編集メッセージ -->
-      {% for message in messages %}
-      <div class="alert alert-warning" role="alert">
-	{{ message }}
-      </div>
-      {% endfor %}
-
-      <!-- 管理人だけ表示 -->
-      {% if request.user.is_superuser %}
-      <!-- 記事の新規作成ボタン -->
-      <a href="{% url 'blogs:new_blog' %}"><button type="button" class="btn btn-secondary btn-sm">作成</button></a>
-      <br>
-      {% endif %}
-
-
-      <!-- 非表示記事のリスト -->
-      {% for blog in private_blog %}
-      <div class="media">
-	<div class="media-body">
-	  {% if blog.category.thumbnail.bool %}
-	  <p><img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image"></p>
-	  <p>
+<!-- コンテナ -->
+<div class="container-fluid">
+  <!-- グリッドシステム -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- 記事のリストカード -->
+    {% for blog in private_blog %}
+    <div class="col">
+      <a style="text-decoration:none;" href="{% url 'blogs:private_detail' blog.pk %}">
+	<div class="card border-0">
+	  {% if blog.thumbnail %}
+	  <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="...">
+	  {% elif blog.category.thumbnail %}
+	  <img src="{{ blog.category.thumbnail.url }}" class="card-img-top" alt="#">
+	  {% else %}
+	  <img src="{% static 'blogs/image/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg' %}" class="card-img-top" alt="#">
 	  {% endif %}
-	  <strong>{{ blog.created_at }}</strong> /
-	  <strong class="text-warning">{{ blog.category.title }}</strong>
-	  
-	  <!-- 管理人だけ表示 -->
-	  {% if request.user.is_superuser %}
-	  <!-- 公開用リンク -->
-	  / <a href="{% url 'blogs:release' pk=blog.id %}">公開</a>
-	  {% endif %}
-	  </p>
-	  <a class="a-link" href="{% url 'blogs:private_detail' blog.pk %}">
-	    <h5 class="mt-0 mb-1">{{ blog.title }}</h5><br>
-	  </a>
-	  <p class="text-black-50">{{ blog.text | slice:':100' | striptags }} ...</p>
+	  <div class="card-body">
+	    <h5 class="card-title">{{ blog.title }}</h5>
+	    <p class="card-text">{{ blog.text | markdown_to_html | striptags | truncatechars:'150' }}</p>
+	    <p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%;">
+	      {{ blog.category.title }}
+	    </button></p>
+	    <p>更新日：{{ blog.updated_at | date:'Y/m/d' }}</p>
+	  </div>
 	</div>
-      </div>
-      {% endfor %}
-      <!-- 非表示記事リスト終 -->
-
+      </a>
     </div>
-    <!-- メインバー終 -->
-
-    <!-- サイドバー -->
-    <div class="col-lg-4 col-sm-12 side-bar-blogs">
-    </div>
-    <!-- サイドバー終 -->
-
+    {% endfor %}
+    <!-- 記事のリストカード終了 -->
   </div>
-  <!-- BootStrapのグリッドシステム終 -->
+  <!-- グリッドシステム終 -->
+
 </div>
+<!-- コンテナ終 -->
 
 {% endblock %}

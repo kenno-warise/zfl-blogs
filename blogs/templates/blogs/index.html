@@ -1,116 +1,157 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
+{% load mark %}
 
 {% block blogs-style %}
-<link rel="stylesheet" href="{% static 'blogs/css/blogs-style.css' %}">
+<!-- Original CSS -->
+<link rel="stylesheet" href="{% static 'blogs/css/index-style.css' %}">
 {% endblock blogs-style %}
 
 {% block content %}
 
-<!-- コンテナ内　カテゴリー・記事リスト・サイドバーなど -->
-<div class="container">
+<!-- ナビバーを読み込み -->
+{% include 'blogs/include_navbar.html' %}
 
-  <!-- BootStrapのグリッドシステム -->
-  <div class="row">
+<!-- 看板 -->
+{% if messages %}
+{% for message in messages %}
+<figure class="text-center" style="background-color: gainsboro;">
+  <blockquote class="blockquote">
+    <h1 class="display-2">{{ message }} {{ blogs.count }}件<h1>
+  </blockquote>
+  <br>
+  <figcaption class="blockquote-footer">
+    カテゴリー
+  </figcaption>
+</figure>
+{% endfor %}
+{% else %}
+<figure class="text-center" style="background-color: gainsboro;">
+  <blockquote class="blockquote">
+    <h1 class="display-1">Blogトップ</h1>
+  </blockquote>
+  <br>
+  <figcaption class="blockquote-footer">
+    ブログはプログラミング言語のPythonに関する記事を投稿しています。WebフレームワークのDjangoや機械学習、Webアプリの環境構築には欠かせないインフラ周りにについても取り上げています。
+  </figcaption>
+</figure>
+{% endif %}
+<!-- 看板終了 -->
 
-    <!-- メインバー -->
-    <div class="col-lg-8 col-sm-12 main-bar-blogs">
-
-      <!-- 看板 -->
-      <div class="jumbotron jumbotron-fluid jumbotron-blogs">
-	<div class="container">
-	  <div style="display: flex;">
-	    <img class="d-flex align-self-center mr-3" src="{% static 'blogs/image/blogs_img.png' %}" alt="Generic placeholder image">
-	    <h2>{% block title %}Blog{% endblock %}</h2>
+<!-- コンテナ -->
+<div id="container-fluid">
+  <!-- グリッドシステム -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- 記事のリストカード -->
+    {% for blog in blogs %}
+    <div class="col">
+      <a style="text-decoration:none;" href="{% url 'blogs:detail' blog.pk %}">
+	<div class="card border-0">
+	  {% if blog.thumbnail %}
+	  <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="...">
+	  {% elif blog.category.thumbnail %}
+	  <img src="{{ blog.category.thumbnail.url }}" class="card-img-top" alt="#">
+	  {% else %}
+	  <img src="{% static 'blogs/image/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg' %}" class="card-img-top" alt="#">
+	  {% endif %}
+	  <div class="card-body">
+	    <h5 class="card-title">{{ blog.title }}</h5>
+	    <p class="card-text">{{ blog.text | markdown_to_html | striptags | truncatechars:'150' }}</p>
+	    <p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%;">
+	      {{ blog.category.title }}
+	    </button></p>
+	    <p>更新日：{{ blog.updated_at | date:'Y/m/d' }}</p>
 	  </div>
-	<p class="lead">
-	<a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
-	{% for category in category_list %}
-	<a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:category' category %}">{{ category }}</a>
-	{% endfor %}
-	</p>
 	</div>
-      </div><!-- 看板終 -->
-
-      <!-- 管理人のみ表示 -->
-      {% if request.user.is_superuser %}
-      <!-- 非公開記事のリンク -->
-      <a type="button" class="btn btn-success btn-sm" href="{% url 'blogs:private_index' %}">非公開 </a>
-      {% endif %}
-
-      <!-- 記事投稿件数 -->
-      {% if blogs.cunt != 0 %}
-      <p>投稿<strong>{{ blogs.count }}</strong>件</p>
-      {% endif %}
-
-      <!-- messagesが呼び出された時に表示 -->
-      {% if messages %}
-      <div class="alert alert-success" role="alert">
-	{% for message in messages %}
-	<strong>{{ message }}</strong>
-	{% endfor %}
-      </div>
-      {% endif %}
-
-      <!-- 記事のリスト -->
-      {% for blog in blogs %}
-      <div class="media media-blogs">
-	<div class="media-body">
-	  {% if blog.category.thumbnail.bool %}
-	  <p>
-	  <img class="d-flex ml-3" src="{{ blog.category.thumbnail.url }}" alt="Generic placeholder image">
-	  </p>
-	  {% endif %}
-	  <p>
-	  <strong>{{ blog.created_at }}</strong> - 
-	  <strong class="text-warning">{{ blog.category.title }}</strong>
-	  {% if request.user.is_superuser %}
-	  <a href="{% url 'blogs:private' pk=blog.id %}">非公開</a>
-	  {% endif %}
-	  </p>
-	  <a class="a-link" href="{% url 'blogs:detail' blog.pk %}">
-	    <h5 class="mt-0 mb-1"><strong>{{ blog.title }}</strong></h5><br>
-	  </a>
-	  <p class="text-black-50">{{ blog.text | truncatechars:'100' | striptags }}</p>
-	</div>
-      </div>
-      {% endfor %}
-      <!-- 記事リスト終 -->
-
-      <!-- ページネーション -->
-      {% include 'blogs/page.html' %}
+      </a>
     </div>
-    <!-- メインバー終 -->
-
-    <!-- サイドバー -->
-    <div class="col-lg-4 col-sm-12 side-bar-blogs">
-
-      <!-- ブログ記事アクセスのランキング表示 （一時停止）
-      { include 'blogs/top_10_ranking.html' %} -->
-
-      <!-- 追従表示 -->
-      <div class="stick">
-
-	<!-- ブログのカテゴリー分けされたグラフ表 -->
-	{% include 'blogs/category_graph.html' %}
-	<br>
-
-	<!-- カテゴリーリンク -->
-	<p class="lead">
-	<a type="button" class="btn btn-outline-secondary btn-sm" href="{% url 'blogs:index' %}">Blog top</a>
-	{% for category in category_list %}
-	<a type="button" class="btn btn-secondary btn-sm" href="{% url 'blogs:category' category %}">{{ category }}</a>
-	{% endfor %}
-	</p>
-	<!-- カテゴリーリンク終 -->
-
-      </div>
-    </div>
-    <!-- サイドバー終 -->
-
+    {% endfor %}
+    <!-- 記事のリストカード終了 -->
   </div>
-  <!-- BootStrapのグリッドシステム終 -->
+  <!-- グリッドシステム終 -->
 
+    <!-- ページネーション -->
+    <div class="pagination">
+    {% include 'blogs/page.html' %}
+    </div>
+    <!-- ページネーション終 -->
 </div>
+<!-- コンテナ終 -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+<script>
+
+  // 画面切り替えによるレスポンシブ対応
+  // こちらはアクセスされた際の処理
+  if(window.matchMedia("(max-width:767px)").matches){
+    // スマホ処理
+    // 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
+    var sampleElement = document.getElementById('container-fluid');
+    sampleElement.classList.remove('container-fluid');
+  }else if (window.matchMedia('(min-width:768px)').matches) {
+    // PC処理
+    // 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
+    var sampleElement = document.getElementById('container-fluid');
+    sampleElement.classList.add('container-fluid');
+  }
+
+
+// 画面切り替えによるレスポンシブ対応
+// こちらはリアルタイム処理
+$(function(){
+  var timer = false;
+  $(window).resize(function() {
+    if (timer !== false) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function() {
+      if(window.matchMedia("(max-width:767px)").matches){
+	//スマホ処理
+	// 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
+	var sampleElement = document.getElementById('container-fluid');
+	sampleElement.classList.remove('container-fluid');
+
+      }else if (window.matchMedia('(min-width:768px)').matches) {
+	// PC処理
+	// 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
+	var sampleElement = document.getElementById('container-fluid');
+	sampleElement.classList.add('container-fluid');
+      }
+    }, 200);
+  });
+});
+
+</script>
 
 {% endblock %}
+
+<script>
+
+  // こちらは機能しないので保留中
+  // スクロールしたら要素が表示する処理
+  //スクロール時のイベントを追加
+  window.addEventListener('scroll', function(){
+
+    //すべての.itemを取得
+    const card = document.querySelectorAll('.card');
+
+    //querySelectorAll('.item')は配列になるので、for構文で取得
+    //配列は0から始まるのでi = 0
+    //i < item.lengthで配列の要素よりも数が小さい時　i++(インクリメント)1つずつ増加
+    for(let i = 0; i < card.length; i++){
+
+      //.itemのオフセットの高さを取得
+      var targetTop = card[i].offsetTop;
+
+      //画面のスクロール量 + 300px > .itemのオフセットの高さを取得
+      if(window.scrollY + 300 > targetTop){
+
+	//書くitemにクラスshowを追加
+	card[i].classList.add('show');
+      }
+    }
+  });
+</script>

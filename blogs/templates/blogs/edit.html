@@ -1,21 +1,19 @@
 ﻿{% extends 'base.html' %}
 {% load static %}
 
-{% block detail-style %}
-<link rel="stylesheet" href="{% static 'blogs/css/detail-style.css' %}">
-<link rel="stylesheet" href="{% static 'blogs/css/tomorrow-night-bright.css' %}">
-{% endblock detail-style %}
+{% block blogs-style %}
+<link rel="stylesheet" href="{% static 'blogs/css/create-style.css' %}">
+<link rel="stylesheet" href="{% static 'blogs/css/markdown-style.css' %}">
+<link rel="stylesheet" href="{% static 'blogs/css/nnfx-dark.css' %}">
+{% endblock blogs-style %}
 
 {% block content %}
-
-<!-- マークダウン記法のリスト -->
-{% include 'blogs/markdown_modal.html' %}
 
 <!-- コンテナ内　記事更新フォーム・マークダウンのコード -->
 <div class="blogs-title container">
 
-  <!-- 非表示リストに戻るリンク -->
-  <a class="text-violet" href="{% url 'blogs:detail' blog.pk %}">記事詳細へ戻る</a>
+    <!-- マークダウン記法のリスト -->
+      {% include 'blogs/markdown_modal.html' %}
 
   <!-- 記事更新フォーム -->
   <!-- FormViewで使用する場合、action="{ url 'blogs:edit_blog' blog.pk %}"のやり方もある。 -->
@@ -27,7 +25,13 @@
       {{ field }}
     </div>
     {% endfor %}
-    <button type="submit" class="btn btn-primary btn-sm">再投稿</button>
+    <div class="sticky-bottom">
+	<!-- 詳細ページに戻るリンク -->
+	<a href="{% url 'blogs:detail' blog.pk %}">
+	  <button type="button" class="btn btn-dark btn-smdisabled">戻る</button>
+	</a>
+      <button type="submit" class="btn btn-primary btn-sm">再投稿</button>
+    </div>
   </form>
   <!-- 記事更新フォーム終 -->
 
@@ -35,7 +39,6 @@
   {{ form.media }}
 
 </div>
-<br>
 <br>
 
 {% endblock %}
