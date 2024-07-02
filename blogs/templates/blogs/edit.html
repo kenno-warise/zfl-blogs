@@ -11,10 +11,8 @@
 
 <!-- コンテナ内　記事更新フォーム・マークダウンのコード -->
 <div class="blogs-title container">
-
-    <!-- マークダウン記法のリスト -->
-      {% include 'blogs/markdown_modal.html' %}
-
+  <!-- マークダウン記法のリスト -->
+  {% include 'blogs/markdown_modal.html' %}
   <!-- 記事更新フォーム -->
   <!-- FormViewで使用する場合、action="{ url 'blogs:edit_blog' blog.pk %}"のやり方もある。 -->
   <form action="" method="POST">
@@ -26,10 +24,10 @@
     </div>
     {% endfor %}
     <div class="sticky-bottom">
-	<!-- 詳細ページに戻るリンク -->
-	<a href="{% url 'blogs:detail' blog.pk %}">
-	  <button type="button" class="btn btn-dark btn-smdisabled">戻る</button>
-	</a>
+      <!-- 詳細ページに戻るリンク -->
+      <a href="{% url 'blogs:private_detail' blog.pk %}">
+	<button type="button" class="btn btn-dark btn-smdisabled">戻る</button>
+      </a>
       <button type="submit" class="btn btn-primary btn-sm">再投稿</button>
     </div>
   </form>
@@ -39,6 +37,9 @@
   {{ form.media }}
 
 </div>
-<br>
+
+<!-- シンタックスハイライト -->
+<script type="text/javascript" src="{% static 'blogs/js/highlight.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 {% endblock %}

@@ -42,13 +42,14 @@
 .stick { /* 目次を追従表示 */
   position: -webkit-sticky;
   position: sticky;
-  top: 10%;
+  top: 2%;
 }
 
 /* サイド目次のスクロール */
 .blogs-sidebar .toc {
   height: 500px;
   overflow-y: scroll;
+  margin-top: 5%;
   /*margin-bottom: 50px;*/
 }
 
@@ -61,6 +62,21 @@
   list-style: none;
   /* line-height: 200%; */
   margin-top: 2%;
+}
+
+.blogs-sidebar #new-articl {
+  margin-top: 5%;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.blogs-sidebar #new-articl a {
+  text-decoration:none;
+  color: black;
+}
+
+.blogs-sidebar #new-articl p {
+  margin-top: 10%;
 }
 
 /* サイドバー終 */

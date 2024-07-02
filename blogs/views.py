@@ -49,6 +49,9 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data(**kwargs)
+        context["blog"] = get_object_or_404(
+                Blog, id=self.kwargs['pk'], is_publick=True
+        )
         context["new_articls"] = self.model.objects.filter(is_publick=True).order_by(
             "-id"
         )[:5]
@@ -70,11 +73,11 @@ class PrivateIndexView(ListView):
 class PrivateDetailView(DetailView):
     model = Blog
     template_name = "blogs/private_detail.html"
-    # context_object_name = 'private_detail'
+    context_object_name = 'private_blog'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["private_detail"] = get_object_or_404(
+        context["private_blog"] = get_object_or_404(
             Blog, id=self.kwargs["pk"], is_publick=False
         )
         return context

@@ -74,8 +74,28 @@
 
       <!-- Markdownのtoc要素 -->
       <!-- マークダウンのtoc要素をBootstrapの要素に置き換える -->
-      <div class="stick">  
-	{{ blog.get_toc | markdown_to_html }}
+      <div class="stick">
+	<ul class="nav nav-tabs">
+	  <li class="nav-item">
+	    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#toc" type="button">目次</button>
+	  </li>
+	  <li class="nav-item">
+	    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#new-articl" type="button">新着記事</button>
+	  </li>
+	</ul>
+	<div class="tab-content">
+	  <div class="tab-pane active" id="toc">
+	    {{ blog.get_toc | markdown_to_html }}
+	  </div>
+	  <div class="tab-pane" id="new-articl">
+	    <!-- 新着記事リスト -->
+	      {% for articl in new_articls %}
+	      <a href="{% url 'blogs:detail' articl.pk %}">
+		  <p>{{ articl.title }}</p>
+	      </a>
+	      {% endfor %}
+	  </div>
+	</div>
       </div>
       <!-- Markdownのtoc要素終 -->
 
