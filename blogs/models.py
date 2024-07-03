@@ -8,7 +8,17 @@ from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS  # ty
 
 class Category(models.Model):
     """カテゴリーモデル"""
-
+    
+    # カラーリスト
+    COLORS = [
+            ["gray", "gray"],
+            ["crimson", "crimson"],
+            ["royalblue", "royalblue"],
+            ["darkgreen", "darkgreen"],
+            ["darkolivegreen", "darkolivegreen"],
+            ["darkorange", "darkorange"],
+            ["darkviolet", "darkviolet"],
+    ]
     title = models.CharField("カテゴリー", max_length=20)
     thumbnail = models.ImageField(
         "サムネイル（空欄可）",
@@ -20,11 +30,13 @@ class Category(models.Model):
     updated_at = models.DateField(auto_now=True)
     overview = models.CharField("概要", null=True, blank=True, max_length=256)
     slug = models.SlugField(null=True, blank=True, unique=True)
-
+    color = models.CharField(default=COLORS[0][0], choices=COLORS, max_length=50)
+    
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
+        # slug変数が空だった場合、title変数のデータをslug変数に代入する
         if not self.slug:
             self.slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)

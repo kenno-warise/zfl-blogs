@@ -23,12 +23,12 @@ code.hljs {
 .language-xml .hljs-meta,
 .language-xml .hljs-meta-string {
   font-weight: bold;
-  font-style: italic;
+  font-style: normal; /* デフォルトitalic; */
   color: #69f
 }
 .hljs-comment,
 .hljs-quote {
-  font-style: italic;
+  font-style: normal; /* デフォルトitalic; */
   color: #9c6
 }
 .hljs-name,
@@ -73,7 +73,7 @@ code.hljs {
 }
 .hljs-formula {
   background-color: #eee;
-  font-style: italic
+  font-style: normal; /* デフォルトitalic; */
 }
 .hljs-addition {
   background-color: #797
@@ -93,12 +93,12 @@ code.hljs {
   color: #69f
 }
 .hljs-selector-pseudo {
-  font-style: italic
+  font-style: normal; /* デフォルトitalic; */
 }
 .hljs-doctag,
 .hljs-strong {
   font-weight: bold
 }
 .hljs-emphasis {
-  font-style: italic
+  font-style: normal; /* デフォルトitalic; */
 }

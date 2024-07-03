@@ -24,7 +24,7 @@
 	  </h1>
 	</blockquote>
 	<br>
-	<p><button type="button" class="btn btn-secondary btn-sm disabled">
+	<p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%; background-color: {{ blog.category.color }}; color: white;">
 	  {{ blog.category.title }}
 	</button></p>
 	<strong class="text-black-50">投稿日 {{ blog.created_at }}</strong> >> <strong>更新日 {{ blog.updated_at }}</strong>
@@ -66,8 +66,6 @@
 	<img src="{{ blog.thumbnail.url }}" class="img-thumbnail" alt="...">
 	{% elif blog.category.thumbnail %}
 	<img src="{{ blog.category.thumbnail.url }}" class="img-thumbnail" alt="...">
-	{% else %}
-	<img src="{% static 'blogs/image/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg'  %}" class="img-thumbnail" alt="...">
 	{% endif %}
       </div>
       <!-- ブログのサムネイル終 -->
@@ -91,7 +89,11 @@
 	    <!-- 新着記事リスト -->
 	      {% for articl in new_articls %}
 	      <a href="{% url 'blogs:detail' articl.pk %}">
-		  <p>{{ articl.title }}</p>
+		<p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{ articl.category.color }}; color: white;">
+		  {{ articl.category.title }}
+		</button>
+		{{ articl.title }}
+		</p>
 	      </a>
 	      {% endfor %}
 	  </div>

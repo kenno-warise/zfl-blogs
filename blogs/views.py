@@ -1,8 +1,8 @@
 ﻿import io
-
 import japanize_matplotlib  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np  # type: ignore
+from distutils.util import strtobool
 from django.contrib import messages  # type: ignore
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import get_object_or_404, redirect  # type: ignore
@@ -39,6 +39,14 @@ class CategoryView(ListView):
         queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
         messages.success(self.request, category)
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        """テンプレートへ渡す新着記事のインスタンスの作成"""
+        context = super().get_context_data(**kwargs)
+        context["category"] = get_object_or_404(
+                Category, title=self.kwargs['category']
+        )
+        return context
 
 
 class BlogDetailView(DetailView):
@@ -97,7 +105,14 @@ class BlogFormView(CreateView):
     get_object_name = "blog"
 
     def form_valid(self, form):
-        """検証が終わったらメッセージを表示する"""
+        """保存前の検証フェーズ"""
+        # is_publickによってリダイレクト先を変更する
+        if bool(strtobool(form.data['is_publick'])):
+            self.success_url = reverse_lazy("blogs:index")
+        else:
+            self.success_url = reverse_lazy("blogs:private_index")
+        
+        # メッセージを表示する
         messages.success(self.request, "新規作成完了")
         return super().form_valid(form)
 
@@ -118,8 +133,16 @@ class EditBlogFormView(UpdateView):
     get_object_name = "blog"
 
     def form_valid(self, form):
-        """検証が終わったらメッセージを表示する"""
+        """保存前の検証フェーズ"""
+        # is_publickによってリダイレクト先を変更する
+        if bool(strtobool(form.data['is_publick'])):
+            self.success_url = reverse_lazy("blogs:index")
+        else:
+            self.success_url = reverse_lazy("blogs:private_index")
+        
+        # 検証完了のメッセージを設定
         messages.success(self.request, "更新完了")
+
         return super().form_valid(form)
 
     def get(self, request, pk):

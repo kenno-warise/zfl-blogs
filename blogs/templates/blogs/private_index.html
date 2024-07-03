@@ -12,9 +12,9 @@
 {% include 'blogs/include_navbar.html' %}
 
 <!-- 看板 -->
+<figure class="text-center" style="background-color: gainsboro;">
 {% if messages %}
 {% for message in messages %}
-<figure class="text-center" style="background-color: gainsboro;">
   <blockquote class="blockquote">
     <h1 class="display-2">{{ message }} {{ blogs.count }}件<h1>
   </blockquote>
@@ -22,10 +22,8 @@
   <figcaption class="blockquote-footer">
     カテゴリー
   </figcaption>
-</figure>
 {% endfor %}
 {% else %}
-<figure class="text-center" style="background-color: gainsboro;">
   <blockquote class="blockquote">
     <h1 class="display-1">非公開リスト {{ private_blog.count }}件</h1>
   </blockquote>
@@ -33,8 +31,8 @@
   <figcaption class="blockquote-footer">
     非公開にしている記事のリストページです
   </figcaption>
-</figure>
 {% endif %}
+</figure>
 <!-- 看板終了 -->
 
 <!-- コンテナ -->
@@ -50,13 +48,11 @@
 	  <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="...">
 	  {% elif blog.category.thumbnail %}
 	  <img src="{{ blog.category.thumbnail.url }}" class="card-img-top" alt="#">
-	  {% else %}
-	  <img src="{% static 'blogs/image/glenn-carstens-peters-npxXWgQ33ZQ-unsplash.jpg' %}" class="card-img-top" alt="#">
 	  {% endif %}
 	  <div class="card-body">
 	    <h5 class="card-title">{{ blog.title }}</h5>
 	    <p class="card-text">{{ blog.text | markdown_to_html | striptags | truncatechars:'150' }}</p>
-	    <p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%;">
+	    <p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%; background-color: {{ blog.category.color }}; color: white;">
 	      {{ blog.category.title }}
 	    </button></p>
 	    <p>更新日：{{ blog.updated_at | date:'Y/m/d' }}</p>

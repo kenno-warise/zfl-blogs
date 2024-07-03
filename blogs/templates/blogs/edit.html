@@ -25,9 +25,15 @@
     {% endfor %}
     <div class="sticky-bottom">
       <!-- 詳細ページに戻るリンク -->
+      {% if blog.is_publick %}
+      <a href="{% url 'blogs:detail' blog.pk %}">
+	<button type="button" class="btn btn-dark btn-smdisabled">戻る</button>
+      </a>
+      {% else %}
       <a href="{% url 'blogs:private_detail' blog.pk %}">
 	<button type="button" class="btn btn-dark btn-smdisabled">戻る</button>
       </a>
+      {% endif %}
       <button type="submit" class="btn btn-primary btn-sm">再投稿</button>
     </div>
   </form>
