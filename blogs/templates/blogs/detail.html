@@ -46,7 +46,7 @@
 	  <!-- 管理人だけ表示 -->
 	  {% if request.user.is_superuser %}
 	  <!-- 記事編集用ボタン -->
-	  <a title="編集" href="{% url 'blogs:edit_blog' blog.id %}">
+	  <a title="編集" href="{% url 'blogs:edit' blog.id %}">
 	    <i class="bi bi-pencil-square"></i>
 	  </a>
 	  {% endif %}
@@ -233,7 +233,7 @@ childElement.forEach(element => {
 // MathJax 
 MathJax = {
   chtml: {
-    matchFontHeight: false
+  matchFontHeight: false
   },
   tex: {
     inlineMath: [['$', '$']]

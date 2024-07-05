@@ -1,14 +1,10 @@
-﻿import io
-import japanize_matplotlib  # type: ignore
-import matplotlib.pyplot as plt  # type: ignore
-import numpy as np  # type: ignore
-from distutils.util import strtobool
+﻿from distutils.util import strtobool
+
 from django.contrib import messages  # type: ignore
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import get_object_or_404, redirect  # type: ignore
 from django.urls import reverse_lazy  # type:ignore
-from django.views.generic import CreateView, DetailView, ListView, UpdateView, View  # type: ignore
-from matplotlib.backends.backend_agg import FigureCanvasAgg  # type: ignore
+from django.views.generic import CreateView, DetailView, ListView, UpdateView  # type: ignore
 
 from .forms import BlogForm
 from .models import Blog, Category
@@ -39,13 +35,11 @@ class CategoryView(ListView):
         queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
         messages.success(self.request, category)
         return queryset
-    
+
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data(**kwargs)
-        context["category"] = get_object_or_404(
-                Category, title=self.kwargs['category']
-        )
+        context["category"] = get_object_or_404(Category, title=self.kwargs["category"])
         return context
 
 
@@ -57,9 +51,7 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data(**kwargs)
-        context["blog"] = get_object_or_404(
-                Blog, id=self.kwargs['pk'], is_publick=True
-        )
+        context["blog"] = get_object_or_404(Blog, id=self.kwargs["pk"], is_publick=True)
         context["new_articls"] = self.model.objects.filter(is_publick=True).order_by(
             "-id"
         )[:5]
@@ -81,7 +73,7 @@ class PrivateIndexView(ListView):
 class PrivateDetailView(DetailView):
     model = Blog
     template_name = "blogs/private_detail.html"
-    context_object_name = 'private_blog'
+    context_object_name = "private_blog"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -107,11 +99,11 @@ class BlogFormView(CreateView):
     def form_valid(self, form):
         """保存前の検証フェーズ"""
         # is_publickによってリダイレクト先を変更する
-        if bool(strtobool(form.data['is_publick'])):
+        if bool(strtobool(form.data["is_publick"])):
             self.success_url = reverse_lazy("blogs:index")
         else:
             self.success_url = reverse_lazy("blogs:private_index")
-        
+
         # メッセージを表示する
         messages.success(self.request, "新規作成完了")
         return super().form_valid(form)
@@ -135,11 +127,11 @@ class EditBlogFormView(UpdateView):
     def form_valid(self, form):
         """保存前の検証フェーズ"""
         # is_publickによってリダイレクト先を変更する
-        if bool(strtobool(form.data['is_publick'])):
+        if bool(strtobool(form.data["is_publick"])):
             self.success_url = reverse_lazy("blogs:index")
         else:
             self.success_url = reverse_lazy("blogs:private_index")
-        
+
         # 検証完了のメッセージを設定
         messages.success(self.request, "更新完了")
 
@@ -168,45 +160,3 @@ def private(request, pk):
         blog_private.to_private()
         return redirect("blogs:private_index")
     return HttpResponse("<h1>権限がありません。</h1>")
-
-
-class CategoryGraphView(View):
-    template_name = "blogs/edit_blog.html"
-
-    def get(self, request):
-        """Blogカテゴリーのグラフ"""
-
-        # リンターで引っかかるので定義
-        _ = japanize_matplotlib
-        plt.rcParams.update({"figure.autolayout": True})
-        fig = plt.figure(facecolor="whitesmoke")
-        ax = fig.add_subplot(1, 1, 1)
-        ax.set_facecolor("whitesmoke")  # プロット内の背景色
-
-        # グラフの枠線を削除
-        plt.gca().spines["right"].set_visible(False)
-        plt.gca().spines["top"].set_visible(False)
-        plt.gca().spines["bottom"].set_visible(False)
-        plt.gca().spines["left"].set_visible(False)
-
-        # ラベルの補助線を削除
-        plt.tick_params(bottom=False, left=False, right=False, top=False)
-
-        """ここにデータを作成する"""
-        category_choice = Category.objects.all()
-        blogs_choice = Blog.objects.select_related("category").all()
-        x1 = [data.title for data in category_choice]
-        y1 = [data.category_id for data in blogs_choice]
-        y1 = np.unique(y1, return_counts=True)
-        colorlist = ["r", "y", "g", "b", "m", "c", "#ffff33", "#f781bf"]
-        ax.bar(x1, y1[1], color=colorlist, width=0.3, alpha=0.5)
-        buf = io.BytesIO()
-        canvas = FigureCanvasAgg(fig)
-        canvas.print_png(buf)
-        response = HttpResponse(buf.getvalue(), content_type="image/png")
-        fig.clear()
-        response["Content-Length"] = str(len(response.content))
-
-        # 引数requestがリンターで引っかかるので無理に定義しているだけ
-        request.close()
-        return response

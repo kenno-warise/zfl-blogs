@@ -1,7 +1,3 @@
-django<=2.2.5
-django-cleanup==3.2.0
-django-markdownx==2.0.28
-google-api-python-client==1.7.11
-japanize-matplotlib==1.0.4
-matplotlib==3.0.3
-oauth2client==4.1.3
+django<=2.2.25 # <=は最高2.2.25のバージョン値までなら可
+django-cleanup<=5.2.0
+django-markdownx<=3.0.1

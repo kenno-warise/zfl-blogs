@@ -8,16 +8,16 @@ from markdownx.settings import MARKDOWNX_MARKDOWN_EXTENSIONS as EXTENSIONS  # ty
 
 class Category(models.Model):
     """カテゴリーモデル"""
-    
+
     # カラーリスト
     COLORS = [
-            ["gray", "gray"],
-            ["crimson", "crimson"],
-            ["royalblue", "royalblue"],
-            ["darkgreen", "darkgreen"],
-            ["darkolivegreen", "darkolivegreen"],
-            ["darkorange", "darkorange"],
-            ["darkviolet", "darkviolet"],
+        ["gray", "gray"],
+        ["crimson", "crimson"],
+        ["royalblue", "royalblue"],
+        ["darkgreen", "darkgreen"],
+        ["darkolivegreen", "darkolivegreen"],
+        ["darkorange", "darkorange"],
+        ["darkviolet", "darkviolet"],
     ]
     title = models.CharField("カテゴリー", max_length=20)
     thumbnail = models.ImageField(
@@ -31,7 +31,7 @@ class Category(models.Model):
     overview = models.CharField("概要", null=True, blank=True, max_length=256)
     slug = models.SlugField(null=True, blank=True, unique=True)
     color = models.CharField(default=COLORS[0][0], choices=COLORS, max_length=50)
-    
+
     def __str__(self):
         return self.title
 

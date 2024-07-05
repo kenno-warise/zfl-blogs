@@ -21,7 +21,9 @@
   </blockquote>
   <br>
   <figcaption class="blockquote-footer">
+    {% if category.overview %}
     {{ category.overview }}
+    {% endif %}
   </figcaption>
 {% endfor %}
 {% else %}

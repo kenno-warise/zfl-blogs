@@ -15,8 +15,7 @@ urlpatterns = [
         name="private_detail",
     ),
     path("new_blog/", views.BlogFormView.as_view(), name="new_blog"),
-    path("edit_blog/<int:pk>/", views.EditBlogFormView.as_view(), name="edit_blog"),
+    path("edit/<int:pk>/", views.EditBlogFormView.as_view(), name="edit"),
     path("release/<pk>/", views.release, name="release"),
     path("private/<pk>/", views.private, name="private"),
-    path("category_graph/", views.CategoryGraphView.as_view(), name="category_graph"),
 ]

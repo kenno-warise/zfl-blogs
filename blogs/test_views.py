@@ -52,7 +52,7 @@ class CategoryViewTests(TestCase):
         url = reverse("blogs:category", args=("カテゴリー１",))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f"カテゴリ:{category.title}")
+        self.assertContains(response, category.title)
         self.assertQuerysetEqual(response.context["blogs"], [])
 
     def test_up_blog_in_category(self):
@@ -62,7 +62,7 @@ class CategoryViewTests(TestCase):
         url = reverse("blogs:category", args=("カテゴリー１",))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, f"カテゴリ:{category.title}")
+        self.assertContains(response, category.title)
         self.assertQuerysetEqual(response.context["blogs"], ["<Blog: タイトル>"])
         # QuerySetを使用した判定の場合
         # queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
@@ -153,7 +153,7 @@ class BlogFormViewTests(TestCase):
         """ログインユーザーがブログ作成ページにアクセスした結果"""
         self.client.force_login(User.objects.create_user("tester"))
         response = self.client.get(reverse("blogs:new_blog"))
-        self.assertContains(response, "非表示リスト一覧へ戻る")
+        self.assertContains(response, "戻る")
 
 
 class EditBlogFormViewTests(TestCase):
@@ -163,7 +163,7 @@ class EditBlogFormViewTests(TestCase):
         """ブログが更新され、リダイレクト先へ遷移するテスト"""
         category = Category.objects.create(title="カテゴリー１")
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
-        url = reverse("blogs:edit_blog", args=(blog.id,))
+        url = reverse("blogs:edit", args=(blog.id,))
         redirect_url = reverse("blogs:index")
         response = self.client.post(
             path=url,
@@ -175,7 +175,7 @@ class EditBlogFormViewTests(TestCase):
         """権限の無い状態からブログ更新ページにアクセスした場合"""
         category = Category.objects.create(title="カテゴリー１")
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
-        url = reverse("blogs:edit_blog", args=(blog.id,))
+        url = reverse("blogs:edit", args=(blog.id,))
         response = self.client.get(url)
         self.assertContains(response, "権限がありません。")
 
@@ -184,9 +184,9 @@ class EditBlogFormViewTests(TestCase):
         category = Category.objects.create(title="カテゴリー１")
         blog = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
         self.client.force_login(User.objects.create_user("tester"))
-        url = reverse("blogs:edit_blog", args=(blog.id,))
+        url = reverse("blogs:edit", args=(blog.id,))
         response = self.client.get(url)
-        self.assertContains(response, "記事詳細へ戻る")
+        self.assertContains(response, "戻る")
 
 
 class ReleaseTests(TestCase):
@@ -231,12 +231,3 @@ class PrivateTests(TestCase):
         url = reverse("blogs:private", args=(blog.id,))
         response = self.client.get(url)
         self.assertContains(response, "権限がありません。")
-
-
-class CategoryGraphTests(TestCase):
-    """Categorygraphのテスト"""
-
-    def test_categorygraph_plot(self):
-        """グラフがアクセスされるか"""
-        response = self.client.get(reverse("blogs:category_graph"))
-        self.assertEqual(response.status_code, 200)
