@@ -131,24 +131,25 @@ $ mkdir templates
 
 zfl-blogsパッケージ内にある「markdownx/widget.html」をプロジェクト直下の「templates」ディレクトリにコピーします。
 
-以下のようにして相対パスを確認します。
+以下のようにして目的のディレクトリの在り処を確認できます。
 
 ```console
 $ python3 -c "import blogs; print(blogs.__path__[0])"
 .../lib/python3.6/site-packages/blogs
 ```
 
-相対パスをコピーしてzfl-blogsパッケージ内の「templates」ディレクトリを確認します。
+linuxコマンドの「xargs」を使って一行でコピーしてしまいます。
 
 ```console
-$ ls .../lib/python3.6/site-packages/blogs/templates
-blogs  markdownx
+$ python3 -c "import blogs; print(blogs.__path__[0]+'/templates/markdownx')" | xargs -I % -t cp -r % templates/.
+cp -r /../lib/python3.6/site-packages/blogs/templates/markdownx templates.
 ```
 
-zfl-blogsパッケージにある「templates/markdownx」ディレクトリを自身のプロジェクト直下に作成した「templates」ディレクトリ内にコピーします。
+プロジェクト直下のディレクトリを確認
 
 ```console
-$ cp -r .../lib/python3.6/site-packages/blogs/templates/markdownx templates/.
+$ls templates
+markdownx
 ```
 
 ## 実行
