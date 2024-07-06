@@ -121,7 +121,7 @@ if settings.DEBUG == True:
 
 そうすることで、記事を書く際のマークダウンプレビューを横並びにすることができます。
 
-- ![django-markdownx プレビュー](https://pypi.org/project/django-markdownx/3.0.1/)
+- [django-markdownx プレビュー](https://pypi.org/project/django-markdownx/3.0.1/)
 
 プロジェクト直下に「templates」ディレクトリを作成します。
 
