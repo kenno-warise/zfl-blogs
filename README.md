@@ -2,7 +2,6 @@
 
 [![PyPI - Version](https://img.shields.io/pypi/v/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
-[![PyPI - Django Version](https://img.shields.io/pypi/pyversions/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 
 ![Videotogif (1)](https://github.com/kenno-warise/zfl-blogs/assets/51676019/40e84ba8-6da0-47eb-b8f9-a82f84b034d5)
 
