@@ -3,7 +3,7 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/zfl-blogs.svg)](https://pypi.org/project/zfl-blogs)
 
-![zfl-blogs_1](https://github.com/kenno-warise/zfl-blogs/assets/51676019/15ebe6db-72d4-4bd2-94ed-2d24f829b1e3)
+![Videotogif (1)](https://github.com/kenno-warise/zfl-blogs/assets/51676019/d05a9380-9dcb-4fc2-82f8-f35c86ae9192)
 
 -----
 
@@ -22,6 +22,11 @@ zfl-blogs
 ## インストール
 
 ```console
+$ pip install --upgrade pip
+
+$ pip --version
+pip 21.3.1
+
 $ pip install zfl-blogs
 ```
 
@@ -33,11 +38,12 @@ $ pip install zfl-blogs
 INSTALLED_APPS = [
     ...
     'django.forms',
-    'django_cleanup',
-    'markdownx',
-    'blogs',
+    'django_cleanup',  # ファイルを自動的に削除するサードパーティ
+    'markdownx',       # Django用に構築されたMarkdownエディタ
+    'blogs',           # zfl-blogsアプリ
 ]
 
+# マークダウンプレビューで必要な定義
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 ...
@@ -45,14 +51,14 @@ FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # プロジェクト直下でのtemplatesディレクトリを有効にする
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 ...
-                'blogs.context.common',
+                'blogs.context.common',  # context.pyのcommon関数をテンプレートで使えるようにする
             ],
-            # カスタムテンプレートフィルター
+            # カスタムテンプレートタグ
             'libraries': {
                 'mark': 'blogs.templatetags.mark',
             }
@@ -75,7 +81,7 @@ MARKDOWNX_UPLOAD_MAX_SIZE = 1000 * 1024 # 最大1MBまで可能
 MARKDOWNX_UPLOAD_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/gif']
 
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
-        'extra',
+        'extra',  # Markdownの拡張機能
         'admonition', # 訓戒・忠告
         'sane_lists', # 正常なリスト
         'toc',    # 目次
@@ -115,8 +121,34 @@ if settings.DEBUG == True:
 
 そうすることで、記事を書く際のマークダウンプレビューを横並びにすることができます。
 
+- ![django-markdownx プレビュー](https://pypi.org/project/django-markdownx/3.0.1/)
+
+プロジェクト直下に「templates」ディレクトリを作成します。
+
 ```console
-$ python3 -c "import blogs; print(blogs.__path__)"
+$ mkdir templates
+```
+
+zfl-blogsパッケージ内にある「markdownx/widget.html」をプロジェクト直下の「templates」ディレクトリにコピーします。
+
+以下のようにして相対パスを確認します。
+
+```console
+$ python3 -c "import blogs; print(blogs.__path__[0])"
+.../lib/python3.6/site-packages/blogs
+```
+
+相対パスをコピーしてzfl-blogsパッケージ内の「templates」ディレクトリを確認します。
+
+```console
+$ ls .../lib/python3.6/site-packages/blogs/templates
+blogs  markdownx
+```
+
+zfl-blogsパッケージにある「templates/markdownx」ディレクトリを自身のプロジェクト直下に作成した「templates」ディレクトリ内にコピーします。
+
+```console
+$ cp -r .../lib/python3.6/site-packages/blogs/templates/markdownx templates/.
 ```
 
 ## 実行
@@ -133,7 +165,15 @@ $ python3 manage.py migrate
 $ python3 manage.py createsuperuser
 ```
 
-markdownxで保存された画像を整理するコマンドの実行
+起動
+
+```console
+$ python3 manage.py runserver
+```
+
+## その他
+
+markdownxで保存された画像は自動的に削除されないので、file_cleanupコマンドを実行して手動削除する必要があります。
 
 ```console
 $ python3 manage.py file_cleanup
