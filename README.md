@@ -152,7 +152,7 @@ $ls templates
 markdownx
 ```
 
-プロジェクト直下のtemplatesディレクトリ内にある「base.html」をエクステンドしているので、「base.html」には「title」・「blogs-style」・「detail-style」のブロックタグを設定します。
+プロジェクト直下のtemplatesディレクトリ内にある「base.html」をエクステンドしているので、「base.html」には「title」・「blogs-style」のブロックタグを設定します。
 
 デザインはCSSフレームワークのBootstrap5.3.0を使用しています。
 
@@ -170,7 +170,6 @@ markdownx
 
     <!-- OginalApp Style -->
     {% block blogs-style %}{% endblock blogs-style %}
-    {% block detail-style %}{% endblock detail-style %}
 
   </head>
   <body>
