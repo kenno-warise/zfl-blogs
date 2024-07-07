@@ -152,6 +152,41 @@ $ls templates
 markdownx
 ```
 
+プロジェクト直下のtemplatesディレクトリ内にある「base.html」をエクステンドしているので、「base.html」には「title」・「blogs-style」・「detail-style」のブロックタグを設定します。
+
+デザインはCSSフレームワークのBootstrap5.3.0を使用しています。
+
+```html
+<html lang="ja" prefix="og: http://ogp.me/ns#">
+  <head>
+
+    <!-- Webサイトタイトル -->
+    <title>{% block title %}Blog{% endblock title %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap ICON -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <!-- OginalApp Style -->
+    {% block blogs-style %}{% endblock blogs-style %}
+    {% block detail-style %}{% endblock detail-style %}
+
+  </head>
+  <body>
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>
+```
+
 ## 実行
 
 データベースの作成
