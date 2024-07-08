@@ -39,10 +39,14 @@
   margin-bottom: 5%;
 }
 
-.stick { /* 目次を追従表示 */
+.blogs-sidebar .stick { /* ナビタブを追従表示 */
   position: -webkit-sticky;
   position: sticky;
-  top: 2%;
+  top: 3%;
+}
+
+.blogs-sidebar .nav-tabs { /* ナビタブを追従表示 */
+  margin-top: 5%;
 }
 
 /* サイド目次のスクロール */
@@ -82,3 +86,8 @@
 /* サイドバー終 */
 
 /*-- detail.html終 --*/
+
+/* レイアウトが崩れている時の確認用 */
+/** {
+    outline: 2px red solid;
+}*/

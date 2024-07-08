@@ -24,7 +24,7 @@
 	  </h1>
 	</blockquote>
 	<br>
-	<p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%; background-color: {{ blog.category.color }}; color: white;">
+	<p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{ blog.category.color }}; color: white;">
 	  {{ blog.category.title }}
 	</button></p>
 	<strong class="text-black-50">投稿日 {{ blog.created_at }}</strong> >> <strong>更新日 {{ blog.updated_at }}</strong>
@@ -70,8 +70,7 @@
       </div>
       <!-- ブログのサムネイル終 -->
 
-      <!-- Markdownのtoc要素 -->
-      <!-- マークダウンのtoc要素をBootstrapの要素に置き換える -->
+      <!-- ナビタブ要素 -->
       <div class="stick">
 	<ul class="nav nav-tabs">
 	  <li class="nav-item">
@@ -82,9 +81,11 @@
 	  </li>
 	</ul>
 	<div class="tab-content">
+          <!-- Markdownのtoc要素 -->
 	  <div class="tab-pane active" id="toc">
 	    {{ blog.get_toc | markdown_to_html }}
 	  </div>
+          <!-- Markdownのtoc要素終 -->
 	  <div class="tab-pane" id="new-articl">
 	    <!-- 新着記事リスト -->
 	      {% for articl in new_articls %}
@@ -99,7 +100,7 @@
 	  </div>
 	</div>
       </div>
-      <!-- Markdownのtoc要素終 -->
+      <!-- ナビタブ要素終 -->
 
     </div>
     <!-- サイドバー終 -->
@@ -122,6 +123,7 @@
     // 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
     var sampleElement = document.getElementById('container');
     sampleElement.classList.remove('container');
+    sampleElement.classList.add('container-fluid');
   }else if (window.matchMedia('(min-width:768px)').matches) {
     // PC処理
     // 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
@@ -186,6 +188,7 @@ $(function(){
 	// 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
 	var sampleElement = document.getElementById('container');
 	sampleElement.classList.remove('container');
+        sampleElement.classList.add('container-fluid');
 
       }else if (window.matchMedia('(min-width:768px)').matches) {
 	// PC処理
@@ -198,7 +201,7 @@ $(function(){
 });
 
 
-// Markdown デザイン
+// Markdown（テキスト内） デザイン
 
 
 // 目次要素にBootstrapの要素で囲む（jQuery）

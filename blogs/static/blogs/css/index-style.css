@@ -29,3 +29,8 @@ figure {
 }
 
 /* -- include_index.html終 --*/
+
+/* レイアウトが崩れている時の確認用 */
+/** {
+    outline: 2px red solid;
+}*/

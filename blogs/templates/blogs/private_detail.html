@@ -24,7 +24,7 @@
 	  </h1>
 	</blockquote>
 	<br>
-	<p><button type="button" class="btn btn-secondary btn-sm disabled">
+	<p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{ private_blog.category.color }}; color: white;">
 	  {{ private_blog.category.title }}
 	</button></p>
 	<strong class="text-black-50">投稿日 {{ private_blog.created_at }}</strong> >> <strong>更新日 {{ private_blog.updated_at }}</strong>
@@ -98,6 +98,7 @@
     // 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
     var sampleElement = document.getElementById('container');
     sampleElement.classList.remove('container');
+    sampleElement.classList.add('container-fluid');
   }else if (window.matchMedia('(min-width:768px)').matches) {
     // PC処理
     // 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
@@ -162,6 +163,7 @@ $(function(){
 	// 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
 	var sampleElement = document.getElementById('container');
 	sampleElement.classList.remove('container');
+        sampleElement.classList.add('container-fluid');
 
       }else if (window.matchMedia('(min-width:768px)').matches) {
 	// PC処理

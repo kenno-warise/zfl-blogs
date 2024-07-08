@@ -14,10 +14,10 @@
 
 <!-- 看板 -->
 <figure class="text-center" style="background-color: gainsboro;">
-{% if messages %}
-{% for message in messages %}
+  {% if messages %}
+  {% for message in messages %}
   <blockquote class="blockquote">
-    <h1 class="display-2">{{ message }} {{ blogs.count }}件<h1>
+    <h1 class="display-2">{{ message }} {{ blogs.count }}件</h1>
   </blockquote>
   <br>
   <figcaption class="blockquote-footer">
@@ -25,28 +25,28 @@
     {{ category.overview }}
     {% endif %}
   </figcaption>
-{% endfor %}
-{% else %}
+  {% endfor %}
+  {% else %}
   <blockquote class="blockquote">
     <h1 class="display-1">Blogトップ</h1>
   </blockquote>
   <br>
   <figcaption class="blockquote-footer">
-  ...
+    ...
   </figcaption>
-{% endif %}
+  {% endif %}
 </figure>
 <!-- 看板終了 -->
 
 <!-- コンテナ -->
-<div id="container-fluid">
+<div class="container-fluid">
   <!-- グリッドシステム -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
     <!-- 記事のリストカード -->
     {% for blog in blogs %}
     <div class="col">
       <a style="text-decoration:none;" href="{% url 'blogs:detail' blog.pk %}">
-	<div class="card border-0">
+	<div class="card h-100 border-0">
 	  {% if blog.thumbnail %}
 	  <img src="{{ blog.thumbnail.url }}" class="card-img-top" alt="...">
 	  {% elif blog.category.thumbnail %}
@@ -55,7 +55,7 @@
 	  <div class="card-body">
 	    <h5 class="card-title">{{ blog.title }}</h5>
 	    <p class="card-text">{{ blog.text | markdown_to_html | striptags | truncatechars:'150' }}</p>
-	    <p><button type="button" class="btn btn-secondary btn-sm disabled" style="font-size:60%; background-color: {{blog.category.color }}; color: white;">
+	    <p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{blog.category.color }}; color: white;">
 	      {{ blog.category.title }}
 	    </button></p>
 	    <p>更新日：{{ blog.updated_at | date:'Y/m/d' }}</p>
@@ -68,65 +68,17 @@
   </div>
   <!-- グリッドシステム終 -->
 
-    <!-- ページネーション -->
-    <div class="pagination">
+  <!-- ページネーション -->
+  <div class="pagination">
     {% include 'blogs/page.html' %}
-    </div>
-    <!-- ページネーション終 -->
+  </div>
+  <!-- ページネーション終 -->
 </div>
 <!-- コンテナ終 -->
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-<script>
-
-  // 画面切り替えによるレスポンシブ対応
-  // こちらはアクセスされた際の処理
-  if(window.matchMedia("(max-width:767px)").matches){
-    // スマホ処理
-    // 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
-    var sampleElement = document.getElementById('container-fluid');
-    sampleElement.classList.remove('container-fluid');
-  }else if (window.matchMedia('(min-width:768px)').matches) {
-    // PC処理
-    // 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
-    var sampleElement = document.getElementById('container-fluid');
-    sampleElement.classList.add('container-fluid');
-  }
-
-
-// 画面切り替えによるレスポンシブ対応
-// こちらはリアルタイム処理
-$(function(){
-  var timer = false;
-  $(window).resize(function() {
-    if (timer !== false) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(function() {
-      if(window.matchMedia("(max-width:767px)").matches){
-	//スマホ処理
-	// 両脇の余白を無くすため、Bootstrapのクラスcontainerを削除する
-	var sampleElement = document.getElementById('container-fluid');
-	sampleElement.classList.remove('container-fluid');
-
-      }else if (window.matchMedia('(min-width:768px)').matches) {
-	// PC処理
-	// 両脇の余白を空けるため、Bootstrapのクラスcontainerを削除する
-	var sampleElement = document.getElementById('container-fluid');
-	sampleElement.classList.add('container-fluid');
-      }
-    }, 200);
-  });
-});
-
-</script>
-
 {% endblock %}
 
-<script>
+<!--script>
 
   // こちらは機能しないので保留中
   // スクロールしたら要素が表示する処理
@@ -152,4 +104,4 @@ $(function(){
       }
     }
   });
-</script>
+</script-->
