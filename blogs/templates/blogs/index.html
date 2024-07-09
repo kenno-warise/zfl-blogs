@@ -14,26 +14,26 @@
 
 <!-- 看板 -->
 <figure class="text-center" style="background-color: gainsboro;">
+  
   {% if messages %}
+  <!-- messagesに要素があれば繰り返し処理を実行する -->
   {% for message in messages %}
   <blockquote class="blockquote">
     <h1 class="display-2">{{ message }} {{ blogs.count }}件</h1>
   </blockquote>
   <br>
+  {% if category.overview %}
   <figcaption class="blockquote-footer">
-    {% if category.overview %}
     {{ category.overview }}
-    {% endif %}
   </figcaption>
+  {% endif %}
   {% endfor %}
   {% else %}
+  <!-- messagesに要素がなければ以下を表示する -->
   <blockquote class="blockquote">
-    <h1 class="display-1">Blogトップ</h1>
+    <h1 class="display-2">Blogトップ</h1>
   </blockquote>
   <br>
-  <figcaption class="blockquote-footer">
-    ...
-  </figcaption>
   {% endif %}
 </figure>
 <!-- 看板終了 -->

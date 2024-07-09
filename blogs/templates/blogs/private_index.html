@@ -13,25 +13,13 @@
 
 <!-- 看板 -->
 <figure class="text-center" style="background-color: gainsboro;">
-{% if messages %}
-{% for message in messages %}
   <blockquote class="blockquote">
-    <h1 class="display-2">{{ message }} {{ blogs.count }}件<h1>
-  </blockquote>
-  <br>
-  <figcaption class="blockquote-footer">
-    カテゴリー
-  </figcaption>
-{% endfor %}
-{% else %}
-  <blockquote class="blockquote">
-    <h1 class="display-1">非公開リスト {{ private_blog.count }}件</h1>
+    <h1 class="display-2">非公開リスト {{ private_blog.count }}件</h1>
   </blockquote>
   <br>
   <figcaption class="blockquote-footer">
     非公開にしている記事のリストページです
   </figcaption>
-{% endif %}
 </figure>
 <!-- 看板終了 -->
 
