@@ -54,56 +54,84 @@
       </nav>
       <!-- ナビバーボトム終 -->
 
-    </div>
+		</div>
     <!-- メインバー終 -->
 
-    <!-- サイドバー -->
-    <!-- 目次・新着or関連・検索のタブバーを設定し、デフォルトとして目次にする構想 -->
-    <div class="col-lg-4 col-md-12 blogs-sidebar">
-      <!-- ブログのサムネイル -->
-      <div class="text-center">
-	{% if blog.thumbnail %}
-	<img src="{{ blog.thumbnail.url }}" class="img-thumbnail" alt="...">
-	{% elif blog.category.thumbnail %}
-	<img src="{{ blog.category.thumbnail.url }}" class="img-thumbnail" alt="...">
-	{% endif %}
-      </div>
-      <!-- ブログのサムネイル終 -->
+		<!-- サイドバー -->
+		<!-- 目次・新着or関連・検索のタブバーを設定し、デフォルトとして目次にする構想 -->
+		<div class="col-lg-4 col-md-12 blogs-sidebar">
+			<!-- ブログのサムネイル -->
+			<div class="text-center" style="margin-bottom: 20%;">
+				{% if blog.thumbnail %}
+				<img src="{{ blog.thumbnail.url }}" class="img-thumbnail" alt="...">
+				{% elif blog.category.thumbnail %}
+				<img src="{{ blog.category.thumbnail.url }}" class="img-thumbnail" alt="...">
+				{% endif %}
+			</div>
+			<!-- ブログのサムネイル終 -->
 
-      <!-- ナビタブ要素 -->
-      <div class="stick">
-	<ul class="nav nav-tabs">
-	  <li class="nav-item">
-	    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#toc" type="button">目次</button>
-	  </li>
-	  <li class="nav-item">
-	    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#new-articl" type="button">新着記事</button>
-	  </li>
-	</ul>
-	<div class="tab-content">
-          <!-- Markdownのtoc要素 -->
-	  <div class="tab-pane active" id="toc">
-	    {{ blog.get_toc | markdown_to_html }}
-	  </div>
-          <!-- Markdownのtoc要素終 -->
-	  <div class="tab-pane" id="new-articl">
-	    <!-- 新着記事リスト -->
-	      {% for articl in new_articls %}
-	      <a href="{% url 'blogs:detail' articl.pk %}">
-		<p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{ articl.category.color }}; color: white;">
-		  {{ articl.category.title }}
-		</button>
-		{{ articl.title }}
-		</p>
-	      </a>
-	      {% endfor %}
-	  </div>
-	</div>
-      </div>
-      <!-- ナビタブ要素終 -->
+			<!-- ナビタブ要素 -->
+			<div clAss="stick">
 
-    </div>
-    <!-- サイドバー終 -->
+				<!-- Link Card space -->
+				<!-- 条件分岐でモデルに値が存在するか定義 -->
+				{% comment %}
+				{% if test %}
+				<!-- スタイルの背景色を定義 -->
+				{% for ** in ** %}
+				<div class="card w-100 mx-auto" style="background-color: #003399{{ test.backgroundcolor }}; margin-bottom: 20%;">
+					<!-- サムネイルが存在する場合は表示する -->
+					{% if test.thumbnail %}
+					<img src="{{ test.thumbnail }}" class="card-img-top" alt="description">
+					{% endif %}
+					<div class="card-body">
+						<ul class="list-group list-group-flush">
+							<!-- タイトルとULRを定義 -->
+							{% for ** in test.title.url %}
+							<li class="list-group-item"><a href="{{ url }}" class="card-link">{{ title }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+				{% endfor %}
+				{% endif %}
+				{% endcomment %}
+				<!-- Link Card space -->
+
+				<div>
+					<ul class="nav nav-tabs">
+						<li class="nav-item">
+							<button class="nav-link active" data-bs-toggle="tab" data-bs-target="#toc" type="button">目次</button>
+						</li>
+						<li class="nav-item">
+							<button class="nav-link" data-bs-toggle="tab" data-bs-target="#new-articl" type="button">新着記事</button>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<!-- Markdownのtoc要素 -->
+						<div class="tab-pane active" id="toc">
+							{{ blog.get_toc | markdown_to_html }}
+						</div>
+						<!-- Markdownのtoc要素終 -->
+						<div class="tab-pane" id="new-articl">
+							<!-- 新着記事リスト -->
+							{% for articl in new_articls %}
+							<a href="{% url 'blogs:detail' articl.pk %}">
+								<p><button type="button" class="btn btn-sm disabled" style="font-size:60%; background-color: {{ articl.category.color }}; color: white;">
+										{{ articl.category.title }}
+									</button>
+									{{ articl.title }}
+								</p>
+							</a>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- ナビタブ要素終 -->
+
+		</div>
+		<!-- サイドバー終 -->
 
   </div>
   <!-- BootStrapのグリッドシステム終 -->
