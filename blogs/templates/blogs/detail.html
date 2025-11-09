@@ -73,30 +73,24 @@
 			<!-- ナビタブ要素 -->
 			<div clAss="stick">
 
-				<!-- Link Card space -->
-				<!-- 条件分岐でモデルに値が存在するか定義 -->
-				{% comment %}
-				{% if test %}
-				<!-- スタイルの背景色を定義 -->
-				{% for ** in ** %}
-				<div class="card w-100 mx-auto" style="background-color: #003399{{ test.backgroundcolor }}; margin-bottom: 20%;">
-					<!-- サムネイルが存在する場合は表示する -->
-					{% if test.thumbnail %}
-					<img src="{{ test.thumbnail }}" class="card-img-top" alt="description">
-					{% endif %}
-					<div class="card-body">
-						<ul class="list-group list-group-flush">
-							<!-- タイトルとULRを定義 -->
-							{% for ** in test.title.url %}
-							<li class="list-group-item"><a href="{{ url }}" class="card-link">{{ title }}</a></li>
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-				{% endfor %}
+			<!-- Adversement space -->
+			{% if advertisement %}
+			{% for advertiser in advertisement %}
+			<div class="card w-100 mx-auto" style="background-color: {{ advertiser.image_color }}; margin-bottom: 20%;">
+				{% if advertiser.image %}
+				<img src="{{ advertiser.image.url }}" class="card-img-top" alt="description">
 				{% endif %}
-				{% endcomment %}
-				<!-- Link Card space -->
+				<div class="card-body">
+					<ul class="list-group list-group-flush">
+						{% for anchor in advertiser.anchorlink_set.all %}
+						<li class="list-group-item"><a href="{{ anchor.url }}" class="card-link">{{ anchor.anchor }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			{% endfor %}
+			{% endif %}
+			<!-- Adversement space -->
 
 				<div>
 					<ul class="nav nav-tabs">

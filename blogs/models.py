@@ -95,6 +95,30 @@ class Blog(models.Model):
         verbose_name_plural = "ブログリスト"
 
 
+class Advertisement(models.Model):
+    advertiser_name = models.CharField("広告主", max_length=200)
+    image = models.ImageField("広告画像", blank=True)
+    image_color = models.CharField("イメージカラー", max_length=7, default="#ecf0f1")
+    start_date = models.DateTimeField("開始日時")
+    end_date = models.DateTimeField("終了日時")
+
+    def __str__(self):
+        return self.advertiser_name
+
+    class Meta:
+        verbose_name = "広告主リスト"
+        verbose_name_plural = "広告主リスト"
+
+
+class Anchorlink(models.Model):
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
+    anchor = models.CharField("アンカー", max_length=200)
+    url = models.URLField("URL")
+
+    def __str__(self):
+        return self.anchor
+
+
 # class Popular(models.Model):
 #     """
 #     GoogleAnalytics APIモデル
