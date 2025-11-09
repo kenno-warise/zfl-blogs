@@ -7,7 +7,7 @@ from django.urls import reverse_lazy  # type:ignore
 from django.views.generic import CreateView, DetailView, ListView, UpdateView  # type: ignore
 
 from .forms import BlogForm
-from .models import Blog, Category
+from .models import Blog, Category, Advertisement, Anchorlink
 
 
 class IndexView(ListView):
@@ -55,6 +55,8 @@ class BlogDetailView(DetailView):
         context["new_articls"] = self.model.objects.filter(is_publick=True).order_by(
             "-id"
         )[:5]
+        context["advertisement"] = Advertisement.objects.all().order_by("-id")[:1]
+        # context["anchorlink"] = Anchorlink.objects.filter(advertisement=advertisement)
         return context
 
 
