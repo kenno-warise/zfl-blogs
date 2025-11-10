@@ -25,7 +25,7 @@ classifiers = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/kenno-warise/zfl-blogs/readme.md"
+Documentation = "https://github.com/kenno-warise/zfl-blogs/blob/main/README.md"
 Issues = "https://github.com/kenno-warise/zfl-blogs/issues"
 Source = "https://github.com/kenno-warise/zfl-blogs"
 
