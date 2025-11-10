@@ -57,9 +57,9 @@
 		</div>
     <!-- メインバー終 -->
 
-		<!-- サイドバー -->
-		<!-- 目次・新着or関連・検索のタブバーを設定し、デフォルトとして目次にする構想 -->
+		<!-- Side bar -->
 		<div class="col-lg-4 col-md-12 blogs-sidebar">
+
 			<!-- ブログのサムネイル -->
 			<div class="text-center" style="margin-bottom: 20%;">
 				{% if blog.thumbnail %}
@@ -70,28 +70,32 @@
 			</div>
 			<!-- ブログのサムネイル終 -->
 
-			<!-- ナビタブ要素 -->
+			<!-- Sticky framework -->
 			<div clAss="stick">
 
-			<!-- Adversement space -->
-			{% if advertisement %}
-			{% for advertiser in advertisement %}
-			<div class="card w-100 mx-auto" style="background-color: {{ advertiser.image_color }}; margin-bottom: 20%;">
-				{% if advertiser.image %}
-				<img src="{{ advertiser.image.url }}" class="card-img-top" alt="description">
-				{% endif %}
-				<div class="card-body">
-					<ul class="list-group list-group-flush">
-						{% for anchor in advertiser.anchorlink_set.all %}
-						<li class="list-group-item"><a href="{{ anchor.url }}" class="card-link">{{ anchor.anchor }}</a></li>
-						{% endfor %}
-					</ul>
+				<!-- Adversement space -->
+				{% if advertisement %}
+				{% for advertiser in advertisement %}
+				<div class="card w-100 mx-auto" style="background-color: {{ advertiser.image_color }}; margin-bottom: 20%;">
+					{% if advertiser.image %}
+					<img src="{{ advertiser.image.url }}" class="card-img-top" alt="description">
+					{% endif %}
+					<div class="card-body">
+						<ul class="list-group list-group-flush">
+							{% for anchor in advertiser.anchorlink_set.all %}
+							<li class="list-group-item">
+								<a href="{{ anchor.url }}" class="card-link" target="_blank" rel="noopener norefferrer">{{ anchor.anchor }}</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
 				</div>
-			</div>
-			{% endfor %}
-			{% endif %}
-			<!-- Adversement space -->
+				{% endfor %}
+				{% endif %}
+				<!-- Adversement space -->
 
+				<!-- Nav Tab in Tables & New articls -->
+				<!-- 目次・新着or関連・検索のタブバーを設定し、デフォルトとして目次にする構想 -->
 				<div>
 					<ul class="nav nav-tabs">
 						<li class="nav-item">
@@ -122,10 +126,11 @@
 					</div>
 				</div>
 			</div>
-			<!-- ナビタブ要素終 -->
+			<!-- Nav Tab in Tables & New articls -->
+			<!-- Sticky framework -->
 
 		</div>
-		<!-- サイドバー終 -->
+		<!-- Side bar -->
 
   </div>
   <!-- BootStrapのグリッドシステム終 -->
