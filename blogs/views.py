@@ -56,7 +56,6 @@ class BlogDetailView(DetailView):
             "-id"
         )[:5]
         context["advertisement"] = Advertisement.objects.all().order_by("-id")[:1]
-        # context["anchorlink"] = Anchorlink.objects.filter(advertisement=advertisement)
         return context
 
 
