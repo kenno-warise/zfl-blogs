@@ -15,9 +15,11 @@ class BlogAdmin(admin.ModelAdmin):
         models.TextField: {"widget": AdminMarkdownxWidget},
     }
 
+
 class AnchorlinkInline(admin.TabularInline):
     model = Anchorlink
     extra = 1
+
 
 class AdvertisementAdmin(admin.ModelAdmin):
     inlines = [AnchorlinkInline]

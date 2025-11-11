@@ -4,10 +4,11 @@ from django.contrib import messages  # type: ignore
 from django.http import HttpResponse  # type: ignore
 from django.shortcuts import get_object_or_404, redirect  # type: ignore
 from django.urls import reverse_lazy  # type:ignore
+from django.utils import timezone  # type:ignore
 from django.views.generic import CreateView, DetailView, ListView, UpdateView  # type: ignore
 
 from .forms import BlogForm
-from .models import Blog, Category, Advertisement, Anchorlink
+from .models import Advertisement, Blog, Category
 
 
 class IndexView(ListView):
@@ -32,14 +33,18 @@ class CategoryView(ListView):
         """カテゴリー別でブログ記事が公開且つIDの古い順にデータを取得"""
         # 404エラーを使用した方法
         category = get_object_or_404(Category, title=self.kwargs["category"])
-        queryset = Blog.objects.filter(is_publick=True, category=category).order_by("-id")
+        queryset = Blog.objects.filter(
+            is_publick=True, category=category
+        ).order_by("-id")
         messages.success(self.request, category)
         return queryset
 
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data(**kwargs)
-        context["category"] = get_object_or_404(Category, title=self.kwargs["category"])
+        context["category"] = get_object_or_404(
+            Category, title=self.kwargs["category"]
+        )
         return context
 
 
@@ -51,11 +56,19 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         """テンプレートへ渡す新着記事のインスタンスの作成"""
         context = super().get_context_data(**kwargs)
-        context["blog"] = get_object_or_404(Blog, id=self.kwargs["pk"], is_publick=True)
-        context["new_articls"] = self.model.objects.filter(is_publick=True).order_by(
-            "-id"
-        )[:5]
-        context["advertisement"] = Advertisement.objects.all().order_by("-id")[:1]
+        context["blog"] = get_object_or_404(
+            Blog, id=self.kwargs["pk"], is_publick=True
+        )
+        context["new_articls"] = self.model.objects.filter(
+            is_publick=True
+        ).order_by("-id")[:5]
+        # start_date、end_dateの期間を取得し、且つ最新のデータを1つ取り出す
+        context["advertisement"] = Advertisement.objects.filter(
+            start_date__lte=timezone.now(),  # 現在の時刻を過ぎていればTrue
+            end_date__gte=timezone.now(),  # 現在の時刻を過ぎていなければTrue
+        ).order_by("-id")[
+            :1
+        ]  # 最後に保存されたデータを1つ
         return context
 
 

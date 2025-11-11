@@ -30,7 +30,9 @@ class Category(models.Model):
     updated_at = models.DateField(auto_now=True)
     overview = models.CharField("概要", null=True, blank=True, max_length=256)
     slug = models.SlugField(null=True, blank=True, unique=True)
-    color = models.CharField(default=COLORS[0][0], choices=COLORS, max_length=50)
+    color = models.CharField(
+        default=COLORS[0][0], choices=COLORS, max_length=50
+    )
 
     def __str__(self):
         return self.title
@@ -99,8 +101,8 @@ class Advertisement(models.Model):
     advertiser_name = models.CharField("広告主", max_length=200)
     image = models.ImageField("広告画像", blank=True)
     image_color = models.CharField("イメージカラー", max_length=7, default="#ecf0f1")
-    start_date = models.DateTimeField("開始日時")
-    end_date = models.DateTimeField("終了日時")
+    start_date = models.DateTimeField("開始日時", db_index=True)
+    end_date = models.DateTimeField("終了日時", db_index=True)
 
     def __str__(self):
         return self.advertiser_name
