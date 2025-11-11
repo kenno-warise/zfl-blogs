@@ -40,6 +40,8 @@ class Command(BaseCommand):
                 os.remove(candidate)
                 sum_deletes += 1
         self.stdout.write(self.style.SUCCESS(f"記事中ファイル合計: {len(img_list)}"))
-        self.stdout.write(self.style.SUCCESS(f"メディアファイル合計: {len(candidates_delete)}"))
+        self.stdout.write(
+            self.style.SUCCESS(f"メディアファイル合計: {len(candidates_delete)}")
+        )
         self.stdout.write(self.style.SUCCESS(f"削除したファイル合計: {sum_deletes}"))
         self.stdout.write(self.style.SUCCESS("クリーンアップ完了"))

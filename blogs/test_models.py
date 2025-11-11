@@ -30,14 +30,18 @@ class BlogModelTests(TestCase):
     def test_blog_to_release_result(self):
         """to_releaseメソッド"""
         category = Category.objects.create(title="カテゴリー１")
-        result = category.blog_set.create(title="タイトル", text="テキスト", is_publick=False)
+        result = category.blog_set.create(
+            title="タイトル", text="テキスト", is_publick=False
+        )
         result.to_release()
         self.assertIs(result.is_publick, True)
 
     def test_blog_to_private_result(self):
         """to_privateメソッド"""
         category = Category.objects.create(title="カテゴリー１")
-        result = category.blog_set.create(title="タイトル", text="テキスト", is_publick=True)
+        result = category.blog_set.create(
+            title="タイトル", text="テキスト", is_publick=True
+        )
         result.to_private()
         self.assertIs(result.is_publick, False)
 
